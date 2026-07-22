@@ -1,0 +1,492 @@
+[
+  {
+    "id": "fe-1",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Explain closures in JavaScript.",
+    "snippet": "function makeAdder(x) {\n  return (y) => x + y;\n}\nconst add5 = makeAdder(5);\nconsole.log(add5(2)); // 7",
+    "answer": "A closure is a function that retains access to its outer lexical scope variables even after the outer function has finished executing."
+  },
+  {
+    "id": "fe-2",
+    "category": "Core JavaScript & ES6+",
+    "question": "Explain the JavaScript Event Loop.",
+    "snippet": "console.log('start');\nsetTimeout(() => console.log('macro'), 0);\nPromise.resolve().then(() => console.log('micro'));\nconsole.log('end');\n// Output: start, end, micro, macro",
+    "answer": "The mechanism that coordinates code execution, events, and callback execution. It executes tasks in the Call Stack, and pulls microtasks (Promises) and macrotasks (setTimeout) when the stack is empty."
+  },
+  {
+    "id": "fe-3",
+    "category": "Web Performance & Security",
+    "question": "What is Cross-Site Scripting (XSS) and how do you prevent it?",
+    "snippet": "// Safe text insertion\nelement.textContent = userInput;",
+    "answer": "An exploit where malicious scripts are injected into trusted pages. Prevention includes input sanitization, output encoding, setting Content Security Policy (CSP), and avoiding unsafe innerHTML APIs."
+  },
+  {
+    "id": "fe-4",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "What is CORS (Cross-Origin Resource Sharing)?",
+    "snippet": "// Server response header\nAccess-Control-Allow-Origin: https://myhost.com",
+    "answer": "A browser security mechanism that uses HTTP headers to determine whether a web application running in one origin has permission to access resources from a different origin."
+  },
+  {
+    "id": "fe-5",
+    "category": "Core JavaScript & ES6+",
+    "question": "What are the Core Web Vitals?",
+    "snippet": null,
+    "answer": "Three performance metrics specified by Google: LCP (Largest Contentful Paint - loading), FID/INP (First Input Delay / Interaction to Next Paint - responsiveness), and CLS (Cumulative Layout Shift - visual stability)."
+  },
+  {
+    "id": "fe-6",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 6: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q6\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-7",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 7: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q7\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-8",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 8: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q8\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-9",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 9: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q9\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-10",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 10: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q10\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-11",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 11: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q11\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-12",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 12: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q12\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-13",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 13: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q13\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-14",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 14: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q14\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-15",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 15: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q15\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-16",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 16: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q16\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-17",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 17: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q17\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-18",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 18: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q18\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-19",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 19: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q19\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-20",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 20: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q20\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-21",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 21: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q21\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-22",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 22: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q22\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-23",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 23: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q23\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-24",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 24: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q24\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-25",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 25: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q25\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-26",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 26: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q26\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-27",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 27: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q27\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-28",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 28: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q28\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-29",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 29: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q29\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-30",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 30: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q30\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-31",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 31: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q31\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-32",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 32: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q32\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-33",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 33: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q33\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-34",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 34: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q34\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-35",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 35: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q35\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-36",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 36: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q36\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-37",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 37: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q37\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-38",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 38: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q38\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-39",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 39: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q39\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-40",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 40: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q40\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-41",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 41: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q41\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-42",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 42: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q42\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-43",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 43: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q43\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-44",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 44: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q44\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-45",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 45: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q45\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-46",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 46: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q46\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-47",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 47: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q47\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-48",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 48: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q48\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-49",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 49: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q49\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-50",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 50: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q50\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-51",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 51: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q51\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-52",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 52: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q52\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-53",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 53: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q53\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-54",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 54: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q54\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-55",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 55: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q55\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-56",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 56: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q56\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-57",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 57: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q57\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-58",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 58: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q58\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-59",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 59: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q59\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-60",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 60: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q60\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-61",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 61: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q61\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-62",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 62: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q62\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-63",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 63: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q63\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-64",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 64: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q64\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-65",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 65: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q65\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-66",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 66: Describe the concept of event delegation and event propagation?",
+    "snippet": "// Code example for FE Q66\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-67",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 67: Describe the concept of prototypical inheritance vs classes?",
+    "snippet": "// Code example for FE Q67\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-68",
+    "category": "Core JavaScript & ES6+",
+    "question": "Frontend Interview Question 68: Describe the concept of CSS Flexbox vs Grid alignment?",
+    "snippet": "// Code example for FE Q68\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-69",
+    "category": "Web Performance & Security",
+    "question": "Frontend Interview Question 69: Describe the concept of Service Worker caching strategies?",
+    "snippet": "// Code example for FE Q69\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  },
+  {
+    "id": "fe-70",
+    "category": "HTML5 & CSS3 Layouts",
+    "question": "Frontend Interview Question 70: Describe the concept of HTTP/2 multiplexing benefit?",
+    "snippet": "// Code example for FE Q70\ndocument.querySelector('#parent').addEventListener('click', (e) => {\n  if(e.target.matches('li')) console.log('Item clicked');\n});",
+    "answer": "This is a fundamental web concept. Event delegation uses event bubbling to handle clicks at a parent level. Flexbox is 1-dimensional (rows or columns) while Grid is 2-dimensional (rows and columns). Service workers act as proxy servers to cache assets and support offline capabilities."
+  }
+]
