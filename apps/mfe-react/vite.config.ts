@@ -12,6 +12,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: ['react', 'react-dom'],
+      output: {
+        format: 'esm',
+      },
     },
   },
   test: {
