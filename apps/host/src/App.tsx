@@ -17,7 +17,24 @@ function App() {
   const [localData, setLocalData] = useState(localStorage.getItem('shared-local-data') || '')
   const [loadingRemotes, setLoadingRemotes] = useState(true)
   const [failedRemotes, setFailedRemotes] = useState<Record<string, boolean>>({})
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+  const getSubPath = (pathname: string) => {
+    const base = import.meta.env.BASE_URL || '/'
+    if (base !== '/' && pathname.startsWith(base)) {
+      const sub = pathname.slice(base.length)
+      return sub.startsWith('/') ? sub : '/' + sub
+    }
+    return pathname
+  }
+
+  const getFullPath = (path: string) => {
+    const base = import.meta.env.BASE_URL || '/'
+    if (base === '/') return path
+    const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base
+    const cleanPath = path.startsWith('/') ? path : '/' + path
+    return cleanBase + cleanPath
+  }
+
+  const [currentPath, setCurrentPath] = useState(getSubPath(window.location.pathname))
 
   // Interview Questions states
   const [questions, setQuestions] = useState<QuestionItem[]>([])
@@ -61,13 +78,13 @@ function App() {
 
     // Routing coordination event listeners
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname)
+      setCurrentPath(getSubPath(window.location.pathname))
     }
     const handleShellNavigation = (e: Event) => {
       const customEvent = e as CustomEvent<string>
       const newPath = customEvent.detail
-      window.history.pushState(null, '', newPath)
-      setCurrentPath(newPath)
+      window.history.pushState(null, '', getFullPath(newPath))
+      setCurrentPath(getSubPath(newPath))
     }
 
     window.addEventListener('popstate', handlePopState)
@@ -131,7 +148,7 @@ function App() {
   }, [currentPath])
 
   const navigateTo = (path: string) => {
-    window.history.pushState(null, '', path)
+    window.history.pushState(null, '', getFullPath(path))
     setCurrentPath(path)
   }
 
