@@ -1,0 +1,282 @@
+[
+  {
+    "id": "test-q-1",
+    "category": "RTL & Vitest Basics",
+    "question": "What is the difference between getBy, queryBy, and findBy queries in React Testing Library?",
+    "snippet": "// getBy: Throws error if not found. Use for elements that MUST be there immediately.\nconst element = screen.getByText('Hello');\n\n// queryBy: Returns null if not found. Use to assert element is NOT in document.\nconst element = screen.queryByText('Loading');\nexpect(element).toBeNull();\n\n// findBy: Returns a Promise. Resolves when element appears (default timeout 1000ms). Use for async elements.\nconst element = await screen.findByText('Loaded');",
+    "answer": "RTL provides three main query types depending on whether the element is expected to exist immediately, be absent, or appear asynchronously. getBy throws, queryBy returns null, and findBy returns a promise."
+  },
+  {
+    "id": "test-q-2",
+    "category": "RTL & Vitest Basics",
+    "question": "How do you test user typing and keyboard inputs correctly?",
+    "snippet": "import { render, screen } from '@testing-library/react';\nimport userEvent from '@testing-library/user-event';\n\ntest('types input correctly', async () => {\n  render(<input type=\"text\" />);\n  const input = screen.getByRole('textbox');\n  \n  await userEvent.type(input, 'Hello World');\n  expect(input).toHaveValue('Hello World');\n});",
+    "answer": "Always prefer '@testing-library/user-event' over 'fireEvent.change'. userEvent simulates actual browser events (like keydown, keypress, keyup, selection) exactly as a real user would, ensuring browser compatibility hooks work."
+  },
+  {
+    "id": "test-q-3",
+    "category": "RTL & Vitest Basics",
+    "question": "How do you implement a Custom Render wrapper to support providers (like Theme, Redux, or Query)?",
+    "snippet": "import { render } from '@testing-library/react';\nimport { ThemeProvider } from './ThemeContext';\n\nconst AllTheProviders = ({ children }) => {\n  return <ThemeProvider>{children}</ThemeProvider>;\n};\n\nconst customRender = (ui, options) =>\n  render(ui, { wrapper: AllTheProviders, ...options });\n\nexport { customRender as render };",
+    "answer": "When components rely on global Context Providers, wrapping them individually in tests becomes redundant. Create a custom render function that wraps the component tree in all required Providers, and export it to override RTL's default render."
+  },
+  {
+    "id": "test-q-4",
+    "category": "Mocking & Spies",
+    "question": "How do you mock and verify callback prop calls using spies?",
+    "snippet": "import { vi } from 'vitest';\nimport { render, screen } from '@testing-library/react';\nimport userEvent from '@testing-library/user-event';\n\ntest('calls onSubmit when form is submitted', async () => {\n  const handleSubmit = vi.fn(); // Create spy\n  render(<Form onSubmit={handleSubmit} />);\n  \n  await userEvent.click(screen.getByRole('button', { name: /submit/i }));\n  \n  expect(handleSubmit).toHaveBeenCalledTimes(1);\n});",
+    "answer": "Use 'vi.fn()' in Vitest (or 'jest.fn()' in Jest) to create a mock function. Pass it as a callback prop to the component under test, trigger the interaction, and assert that the mock was called the correct number of times or with specific parameters."
+  },
+  {
+    "id": "test-q-5",
+    "category": "Mocking & Spies",
+    "question": "How do you mock time-based functions like setTimeout or setInterval?",
+    "snippet": "import { vi } from 'vitest';\n\ntest('triggers timer action', () => {\n  vi.useFakeTimers(); // Intercept timers\n  render(<TimerComponent />);\n  \n  // Fast-forward time\n  vi.advanceTimersByTime(1000);\n  \n  expect(screen.getByText('Time elapsed')).toBeInTheDocument();\n  vi.useRealTimers(); // Restore real timers\n});",
+    "answer": "Testing components with timers can make test suites slow and unstable. Use fake timers to mock browser time APIs, allowing you to advance time programmatically using 'advanceTimersByTime' or flush execution immediately."
+  },
+  {
+    "id": "test-q-6",
+    "category": "Async Testing",
+    "question": "How do you wait for asynchronous operations to complete inside a test?",
+    "snippet": "import { render, screen, waitFor } from '@testing-library/react';\n\ntest('waits for async calculation', async () => {\n  render(<HeavyCalculator />);\n  \n  // Waits and retries assertions until they pass or timeout\n  await waitFor(() => {\n    expect(screen.getByTestId('result')).toHaveTextContent('42');\n  }, { timeout: 2000 });\n});",
+    "answer": "Use 'waitFor' to assert on code that resolves asynchronously. It runs your assertion repeatedly in a loop until it passes or hits the timeout limit. Useful for testing UI changes triggered by microtasks or animation frames."
+  },
+  {
+    "id": "test-q-7",
+    "category": "Mocking APIs & MSW",
+    "question": "How do you configure MSW to mock GraphQL or REST API requests?",
+    "snippet": "import { setupServer } from 'msw/node';\nimport { http, HttpResponse } from 'msw';\n\nconst server = setupServer(\n  http.get('/api/data', () => {\n    return HttpResponse.json({ value: 'Mock Data' });\n  })\n);\n\nbeforeAll(() => server.listen());\nafterEach(() => server.resetHandlers());\nafterAll(() => server.close());",
+    "answer": "Instead of mocking fetch methods globally, configure Mock Service Worker (MSW) to intercept outgoing fetch/axios network requests at the browser layer and return mock mock responses. This validates your actual API endpoints parsing code."
+  },
+  {
+    "id": "test-q-8",
+    "category": "Advanced Scenarios",
+    "question": "How do you test error boundaries catching rendering failures?",
+    "snippet": "import { render, screen } from '@testing-library/react';\nimport ErrorBoundary from './ErrorBoundary';\n\nconst BuggyComponent = () => {\n  throw new Error('Test Error');\n};\n\ntest('renders fallback on error', () => {\n  // Suppress error console logging during expected throws\n  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});\n  \n  render(\n    <ErrorBoundary fallback={<div>Crashed</div>}>\n      <BuggyComponent />\n    </ErrorBoundary>\n  );\n  \n  expect(screen.getByText('Crashed')).toBeInTheDocument();\n  spy.mockRestore();\n});",
+    "answer": "To test an Error Boundary, render a dummy component inside it that throws an error during execution. Verify that the boundary catches the error and displays the correct fallback component. Remember to mock console.error to keep the test log clean."
+  },
+  {
+    "id": "test-q-9",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 9: Explain how you write a test for handling CSS transitions and mock animations in RTL.",
+    "snippet": "// Test setup for handling CSS transitions and mock animations in RTL\ntest('should handle handling CSS transitions and mock animations in RTL', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling CSS transitions and mock animations in RTL. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-10",
+    "category": "Async Testing",
+    "question": "React Testing Question 10: Explain how you write a test for snapshot testing vs visual regression testing benefits.",
+    "snippet": "// Test setup for snapshot testing vs visual regression testing benefits\ntest('should handle snapshot testing vs visual regression testing benefits', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing snapshot testing vs visual regression testing benefits. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-11",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 11: Explain how you write a test for handling custom hooks with fetch query providers in renderHook.",
+    "snippet": "// Test setup for handling custom hooks with fetch query providers in renderHook\ntest('should handle handling custom hooks with fetch query providers in renderHook', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling custom hooks with fetch query providers in renderHook. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-12",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 12: Explain how you write a test for mocking localStorage read/write and storage event triggers.",
+    "snippet": "// Test setup for mocking localStorage read/write and storage event triggers\ntest('should handle mocking localStorage read/write and storage event triggers', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing mocking localStorage read/write and storage event triggers. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-13",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 13: Explain how you write a test for testing accessibility compliance with jest-axe plugin.",
+    "snippet": "// Test setup for testing accessibility compliance with jest-axe plugin\ntest('should handle testing accessibility compliance with jest-axe plugin', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing accessibility compliance with jest-axe plugin. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-14",
+    "category": "Async Testing",
+    "question": "React Testing Question 14: Explain how you write a test for testing component memory leaks and active subscriptions.",
+    "snippet": "// Test setup for testing component memory leaks and active subscriptions\ntest('should handle testing component memory leaks and active subscriptions', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing component memory leaks and active subscriptions. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-15",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 15: Explain how you write a test for mocking modules like react-router useNavigate with spies.",
+    "snippet": "// Test setup for mocking modules like react-router useNavigate with spies\ntest('should handle mocking modules like react-router useNavigate with spies', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing mocking modules like react-router useNavigate with spies. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-16",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 16: Explain how you write a test for testing form validations and validation error states.",
+    "snippet": "// Test setup for testing form validations and validation error states\ntest('should handle testing form validations and validation error states', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing form validations and validation error states. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-17",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 17: Explain how you write a test for testing portals rendering content outside the parent root element.",
+    "snippet": "// Test setup for testing portals rendering content outside the parent root element\ntest('should handle testing portals rendering content outside the parent root element', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing portals rendering content outside the parent root element. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-18",
+    "category": "Async Testing",
+    "question": "React Testing Question 18: Explain how you write a test for spying and mocking window location changes inside tests.",
+    "snippet": "// Test setup for spying and mocking window location changes inside tests\ntest('should handle spying and mocking window location changes inside tests', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing spying and mocking window location changes inside tests. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-19",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 19: Explain how you write a test for handling CSS transitions and mock animations in RTL.",
+    "snippet": "// Test setup for handling CSS transitions and mock animations in RTL\ntest('should handle handling CSS transitions and mock animations in RTL', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling CSS transitions and mock animations in RTL. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-20",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 20: Explain how you write a test for snapshot testing vs visual regression testing benefits.",
+    "snippet": "// Test setup for snapshot testing vs visual regression testing benefits\ntest('should handle snapshot testing vs visual regression testing benefits', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing snapshot testing vs visual regression testing benefits. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-21",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 21: Explain how you write a test for handling custom hooks with fetch query providers in renderHook.",
+    "snippet": "// Test setup for handling custom hooks with fetch query providers in renderHook\ntest('should handle handling custom hooks with fetch query providers in renderHook', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling custom hooks with fetch query providers in renderHook. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-22",
+    "category": "Async Testing",
+    "question": "React Testing Question 22: Explain how you write a test for mocking localStorage read/write and storage event triggers.",
+    "snippet": "// Test setup for mocking localStorage read/write and storage event triggers\ntest('should handle mocking localStorage read/write and storage event triggers', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing mocking localStorage read/write and storage event triggers. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-23",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 23: Explain how you write a test for testing accessibility compliance with jest-axe plugin.",
+    "snippet": "// Test setup for testing accessibility compliance with jest-axe plugin\ntest('should handle testing accessibility compliance with jest-axe plugin', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing accessibility compliance with jest-axe plugin. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-24",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 24: Explain how you write a test for testing component memory leaks and active subscriptions.",
+    "snippet": "// Test setup for testing component memory leaks and active subscriptions\ntest('should handle testing component memory leaks and active subscriptions', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing component memory leaks and active subscriptions. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-25",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 25: Explain how you write a test for mocking modules like react-router useNavigate with spies.",
+    "snippet": "// Test setup for mocking modules like react-router useNavigate with spies\ntest('should handle mocking modules like react-router useNavigate with spies', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing mocking modules like react-router useNavigate with spies. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-26",
+    "category": "Async Testing",
+    "question": "React Testing Question 26: Explain how you write a test for testing form validations and validation error states.",
+    "snippet": "// Test setup for testing form validations and validation error states\ntest('should handle testing form validations and validation error states', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing form validations and validation error states. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-27",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 27: Explain how you write a test for testing portals rendering content outside the parent root element.",
+    "snippet": "// Test setup for testing portals rendering content outside the parent root element\ntest('should handle testing portals rendering content outside the parent root element', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing portals rendering content outside the parent root element. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-28",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 28: Explain how you write a test for spying and mocking window location changes inside tests.",
+    "snippet": "// Test setup for spying and mocking window location changes inside tests\ntest('should handle spying and mocking window location changes inside tests', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing spying and mocking window location changes inside tests. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-29",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 29: Explain how you write a test for handling CSS transitions and mock animations in RTL.",
+    "snippet": "// Test setup for handling CSS transitions and mock animations in RTL\ntest('should handle handling CSS transitions and mock animations in RTL', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling CSS transitions and mock animations in RTL. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-30",
+    "category": "Async Testing",
+    "question": "React Testing Question 30: Explain how you write a test for snapshot testing vs visual regression testing benefits.",
+    "snippet": "// Test setup for snapshot testing vs visual regression testing benefits\ntest('should handle snapshot testing vs visual regression testing benefits', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing snapshot testing vs visual regression testing benefits. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-31",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 31: Explain how you write a test for handling custom hooks with fetch query providers in renderHook.",
+    "snippet": "// Test setup for handling custom hooks with fetch query providers in renderHook\ntest('should handle handling custom hooks with fetch query providers in renderHook', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling custom hooks with fetch query providers in renderHook. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-32",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 32: Explain how you write a test for mocking localStorage read/write and storage event triggers.",
+    "snippet": "// Test setup for mocking localStorage read/write and storage event triggers\ntest('should handle mocking localStorage read/write and storage event triggers', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing mocking localStorage read/write and storage event triggers. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-33",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 33: Explain how you write a test for testing accessibility compliance with jest-axe plugin.",
+    "snippet": "// Test setup for testing accessibility compliance with jest-axe plugin\ntest('should handle testing accessibility compliance with jest-axe plugin', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing accessibility compliance with jest-axe plugin. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-34",
+    "category": "Async Testing",
+    "question": "React Testing Question 34: Explain how you write a test for testing component memory leaks and active subscriptions.",
+    "snippet": "// Test setup for testing component memory leaks and active subscriptions\ntest('should handle testing component memory leaks and active subscriptions', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing component memory leaks and active subscriptions. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-35",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 35: Explain how you write a test for mocking modules like react-router useNavigate with spies.",
+    "snippet": "// Test setup for mocking modules like react-router useNavigate with spies\ntest('should handle mocking modules like react-router useNavigate with spies', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing mocking modules like react-router useNavigate with spies. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-36",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 36: Explain how you write a test for testing form validations and validation error states.",
+    "snippet": "// Test setup for testing form validations and validation error states\ntest('should handle testing form validations and validation error states', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing form validations and validation error states. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-37",
+    "category": "Mocking & Spies",
+    "question": "React Testing Question 37: Explain how you write a test for testing portals rendering content outside the parent root element.",
+    "snippet": "// Test setup for testing portals rendering content outside the parent root element\ntest('should handle testing portals rendering content outside the parent root element', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing testing portals rendering content outside the parent root element. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-38",
+    "category": "Async Testing",
+    "question": "React Testing Question 38: Explain how you write a test for spying and mocking window location changes inside tests.",
+    "snippet": "// Test setup for spying and mocking window location changes inside tests\ntest('should handle spying and mocking window location changes inside tests', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing spying and mocking window location changes inside tests. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-39",
+    "category": "Advanced Scenarios",
+    "question": "React Testing Question 39: Explain how you write a test for handling CSS transitions and mock animations in RTL.",
+    "snippet": "// Test setup for handling CSS transitions and mock animations in RTL\ntest('should handle handling CSS transitions and mock animations in RTL', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing handling CSS transitions and mock animations in RTL. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  },
+  {
+    "id": "test-q-40",
+    "category": "RTL & Vitest Basics",
+    "question": "React Testing Question 40: Explain how you write a test for snapshot testing vs visual regression testing benefits.",
+    "snippet": "// Test setup for snapshot testing vs visual regression testing benefits\ntest('should handle snapshot testing vs visual regression testing benefits', () => {\n  // Implement test assertions here\n});",
+    "answer": "Detailed scenario review for testing snapshot testing vs visual regression testing benefits. For snapshots, check HTML changes. For custom hook fetch queries, wrap renderHook in query clients. For localStorage, spy on getItem/setItem. For accessibility, use axe(container) assertions."
+  }
+]

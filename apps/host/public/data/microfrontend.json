@@ -1,0 +1,457 @@
+[
+  {
+    "id": "mfe-1",
+    "category": "Architecture & Core Concepts",
+    "question": "What is Micro-Frontend architecture?",
+    "snippet": "// Concept mapping\nHost App (React)\n ├── Remote App A (Vue)\n └── Remote App B (React)",
+    "answer": "An architectural style where a frontend app is decomposed into smaller, semi-independent apps that are composed at runtime into a single shell application. It enables independent deployments, team autonomy, and mixing technologies."
+  },
+  {
+    "id": "mfe-2",
+    "category": "Routing & Integration",
+    "question": "How do client-side Micro-Frontends load and mount dynamically?",
+    "snippet": "const script = document.createElement('script');\nscript.src = 'http://localhost:3001/main.js';\nscript.type = 'module';\ndocument.head.appendChild(script);",
+    "answer": "Usually, the host shell fetches an import map or script configuration, dynamically injects script tags, and instantiates the remote elements once the script runs (often using custom HTML elements/Web Components)."
+  },
+  {
+    "id": "mfe-3",
+    "category": "State Management & Style Isolation",
+    "question": "How do you isolate CSS between Micro-Frontends?",
+    "snippet": "const shadow = this.attachShadow({ mode: 'open' });\nconst style = document.createElement('style');\nstyle.textContent = 'h1 { color: blue; }';\nshadow.appendChild(style);",
+    "answer": "Using Shadow DOM (attaching a shadow root encapsulates all styles inside the element, preventing leakage), CSS Modules (scoped class names), Tailwind CSS with custom prefixes, or CSS-in-JS libraries."
+  },
+  {
+    "id": "mfe-4",
+    "category": "Performance & Optimization",
+    "question": "Explain Module Federation.",
+    "snippet": "// vite.config.ts (Vite Module Federation)\nfederation({\n  name: 'host',\n  remotes: {\n    remoteApp: 'http://localhost:3001/assets/remoteEntry.js'\n  }\n})",
+    "answer": "A Webpack/Rspack/Vite feature that allows a JavaScript application to dynamically load code from another application at runtime. It shares common dependencies (like React) to avoid bundle bloat."
+  },
+  {
+    "id": "mfe-5",
+    "category": "Architecture & Core Concepts",
+    "question": "What are Import Maps?",
+    "snippet": "<script type=\"importmap\">\n{\n  \"imports\": {\n    \"react\": \"https://esm.sh/react@19.0.0\"\n  }\n}\n</script>",
+    "answer": "A native browser feature that allows control over what URLs are fetched by JavaScript import statements. It maps bare specifiers (like 'react') to actual URLs without a build step."
+  },
+  {
+    "id": "mfe-6",
+    "category": "Routing & Integration",
+    "question": "How do you coordinate routing in micro-frontends?",
+    "snippet": "// MFE navigation trigger\nwindow.dispatchEvent(new CustomEvent('shell:navigate', { \n  detail: '/profile/settings' \n}));",
+    "answer": "The host shell manages the primary router and address bar. When remotes want to navigate, they dispatch custom navigation events to request route transitions, or react to popstate events."
+  },
+  {
+    "id": "mfe-7",
+    "category": "State Management & Style Isolation",
+    "question": "What is an Error Boundary in the context of Micro-Frontends?",
+    "snippet": "class ErrorBoundary extends React.Component {\n  componentDidCatch(error) {\n    this.setState({ hasError: true });\n  }\n  render() {\n    return this.state.hasError ? <Fallback /> : this.props.children;\n  }\n}",
+    "answer": "A boundary that catches runtime execution errors inside remote components. It prevents a crash in a single remote micro-frontend from breaking the host shell and other remotes."
+  },
+  {
+    "id": "mfe-8",
+    "category": "Performance & Optimization",
+    "question": "How do you share state between decoupled micro-frontends?",
+    "snippet": "window.addEventListener('storage', () => {\n  const data = localStorage.getItem('shared-data');\n});",
+    "answer": "Using browser-level channels like CustomEvents (pub-sub), shared LocalStorage/SessionStorage with window event listeners, or custom state-sync utilities. Avoid sharing direct global stores."
+  },
+  {
+    "id": "mfe-9",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 9: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-10",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 10: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-11",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 11: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-12",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 12: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-13",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 13: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-14",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 14: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-15",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 15: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-16",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 16: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-17",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 17: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-18",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 18: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-19",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 19: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-20",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 20: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-21",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 21: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-22",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 22: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-23",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 23: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-24",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 24: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-25",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 25: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-26",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 26: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-27",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 27: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-28",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 28: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-29",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 29: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-30",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 30: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-31",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 31: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-32",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 32: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-33",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 33: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-34",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 34: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-35",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 35: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-36",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 36: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-37",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 37: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-38",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 38: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-39",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 39: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-40",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 40: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-41",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 41: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-42",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 42: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-43",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 43: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-44",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 44: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-45",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 45: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-46",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 46: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-47",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 47: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-48",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 48: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-49",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 49: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-50",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 50: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-51",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 51: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-52",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 52: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-53",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 53: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-54",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 54: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-55",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 55: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-56",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 56: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-57",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 57: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-58",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 58: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-59",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 59: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-60",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 60: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  },
+  {
+    "id": "mfe-61",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 61: What is the best strategy for managing cache expiration on CDN bundles?",
+    "snippet": "// Cache Control headers\nCache-Control: no-cache, no-store, must-revalidate // For import-map.json\nCache-Control: public, max-age=31536000, immutable // For static bundle assets",
+    "answer": "To manage cache expiration on CDNs for micro-frontends, we use short TTLs (or Cache-Control: no-cache) on meta assets like 'import-map.json' or 'remoteEntry.js'. All compiled JS/CSS bundle assets are named with content hashes (e.g. bundle.[hash].js) and cached permanently (immutable) on the CDN. When a remote redeploys, it updates the import-map pointing to the new hashed bundle URL, ensuring clients load it immediately."
+  },
+  {
+    "id": "mfe-62",
+    "category": "Routing & Integration",
+    "question": "MFE Interview Question 62: What is the best strategy for managing version rollbacks in production import-maps?",
+    "snippet": "// GitHub Actions rollback step snippet\ncurl -X POST https://import-map-registry.service.internal/rollback \\\n  -H \"Authorization: Bearer ${{ secrets.REGISTRY_TOKEN }}\" \\\n  -d '{\"service\": \"mfe-react\", \"target_version\": \"1.0.4\"}'",
+    "answer": "Version rollbacks are achieved by updating the remote URL mapped inside the centralized host import-map registry. When a buggy MFE version is deployed, we run a pipeline script that edits the active 'import-map.json' on S3, pointing the remote key back to the previous stable build URL. Since the browser fetches this JSON dynamically, clients receive the rollback URL instantly on refresh without rebuilding the host."
+  },
+  {
+    "id": "mfe-63",
+    "category": "State Management & Style Isolation",
+    "question": "MFE Interview Question 63: What is the best strategy for managing CI/CD automated tests for federated remotes?",
+    "snippet": "// Playwright import map override injection test\nawait page.addInitScript(() => {\n  window.importMapOverrides = { \"mfe-react\": \"http://localhost:3001/main.js\" };\n});",
+    "answer": "Automated testing for federated remotes requires a three-tier suite:\n1. Isolated Unit Tests: Run using Vitest inside the remote repository matching mock store values.\n2. Integration Tests: Use Cypress or Playwright on the remote app using a mock host wrapper.\n3. End-to-End Tests: A scheduled pipeline loads the live production host alongside the staging remotes using local import-map overrides to verify routing, auth state, and custom event sync before promotion."
+  },
+  {
+    "id": "mfe-64",
+    "category": "Performance & Optimization",
+    "question": "MFE Interview Question 64: What is the best strategy for managing cross-origin resource sharing (CORS) in assets?",
+    "snippet": "// AWS S3 bucket CORS permissions JSON\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\", \"HEAD\"],\n    \"AllowedOrigins\": [\"https://host.mycompany.com\"],\n    \"ExposeHeaders\": []\n  }\n]",
+    "answer": "Since micro-frontends are hosted on separate remote servers (e.g., port 3001, 3002) and loaded inside the host shell (port 3000), browser CORS checks will block them. You must add CORS headers ('Access-Control-Allow-Origin: *' or whitelist specific origins) to your S3 bucket permissions or CDN cache behaviors where remote JS/CSS assets are hosted."
+  },
+  {
+    "id": "mfe-65",
+    "category": "Architecture & Core Concepts",
+    "question": "MFE Interview Question 65: What is the best strategy for managing authentication tokens across subdomains?",
+    "snippet": "// Sharing cookie across subdomains\ndocument.cookie = \"token=xyz123; Domain=company.com; Secure; HttpOnly; SameSite=Strict\";",
+    "answer": "To coordinate authorization across micro-frontends hosted on separate subdomains (e.g. app.company.com, checkout.company.com):\n1. Share cookies containing jwt tokens set with Domain=.company.com.\n2. When cookies cannot be shared, the host shell retrieves the JWT from localStorage and sends it to the iframe/shadow-dom remote during mount via props or CustomEvent communication."
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "remotes": {
+    "mfe-react": "http://localhost:3001/src/main.tsx",
+    "mfe-vue": "http://localhost:3002/src/main.ts"
+  }
+}

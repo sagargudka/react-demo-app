@@ -1,0 +1,352 @@
+[
+  {
+    "id": "aws-1",
+    "category": "S3 Storage & Hosting",
+    "question": "How do you host a static single-page application (SPA) in an S3 Bucket?",
+    "snippet": "// S3 Bucket Static Website Configuration properties\n{\n  \"IndexDocument\": \"index.html\",\n  \"ErrorDocument\": \"index.html\" // Crucial for client-side routing fallback\n}",
+    "answer": "1. Create an S3 Bucket.\n2. Enable 'Static Website Hosting'.\n3. Configure Index and Error documents to both point to 'index.html' (so react-router routes resolve instead of throwing 404).\n4. Update Bucket Policy to allow public read access (or block public access and restrict to CloudFront Origin Access Control)."
+  },
+  {
+    "id": "aws-2",
+    "category": "CloudFront CDN & Edge",
+    "question": "What is Origin Access Control (OAC) in CloudFront and why should you use it?",
+    "snippet": "// Example S3 Bucket policy restricting access to CloudFront OAC\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": {\n    \"Effect\": \"Allow\",\n    \"Principal\": { \"Service\": \"cloudfront.amazonaws.com\" },\n    \"Action\": \"s3:GetObject\",\n    \"Resource\": \"arn:aws:s3:::my-spa-bucket/*\",\n    \"Condition\": {\n      \"StringEquals\": {\n        \"AWS:SourceArn\": \"arn:aws:cloudfront::123456789012:distribution/ED12345EXAMPLE\"\n      }\n    }\n  }\n}",
+    "answer": "Origin Access Control (OAC) restricts direct public HTTP access to your S3 bucket. It forces all client traffic to go through CloudFront CDN. This prevents users from bypassing your CDN security rules, geographical locks, or caching layers."
+  },
+  {
+    "id": "aws-3",
+    "category": "CloudFront CDN & Edge",
+    "question": "How do you configure CloudFront custom error responses for SPAs?",
+    "snippet": null,
+    "answer": "Since client-side routing paths (like /profile/settings) do not exist physically in the S3 bucket, S3 will return a 403 Forbidden or 404 Not Found. You must create a CloudFront Custom Error Response for 403/404 that redirects to path '/index.html' with a HTTP 200 OK status code, handing control back to your router script."
+  },
+  {
+    "id": "aws-4",
+    "category": "IAM & Cognito Auth",
+    "question": "What is the difference between Cognito User Pools and Identity Pools?",
+    "snippet": null,
+    "answer": "User Pools handle authentication (user directory, registration, login, JWT token generation, MFA). Identity Pools (Federated Identities) handle authorization, providing temporary AWS credentials to clients (like access to an S3 bucket or DynamoDB) based on their login state."
+  },
+  {
+    "id": "aws-5",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "What is an Alias record in Route 53 and how does it differ from a CNAME?",
+    "snippet": "// Route 53 record choice\nRecord Type: A - IPv4 address\nAlias: Yes\nRoute traffic to: CloudFront Distribution Endpoint",
+    "answer": "A CNAME maps a hostname to another hostname (e.g. www to cloudfront.net) but cannot be used at the zone apex (e.g. example.com). An Alias record is an AWS-specific DNS extensions that maps the zone apex directly to AWS resources (CloudFront, Load Balancers) without querying extra IP routes, saving DNS lookup time."
+  },
+  {
+    "id": "aws-6",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront invalidation strategies during production deploys?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-7",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle Route 53 health checks and active-passive failover?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-8",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure Cognito MFA token checks on client applications?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-9",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS Amplify console branch deployments?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-10",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 encryption keys at rest (SSE-S3)?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-11",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront signed cookies/URLs for premium client content?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-12",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle ACM SSL/TLS certificate DNS validation?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-13",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure Cognito social login integrations (OAuth2/OIDC)?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-14",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS API Gateway CORS preflight handler rules?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-15",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 versioning features for quick rollback?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-16",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront caching policies vs origin request policies?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-17",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle WAF (Web Application Firewall) rate limit rules on CDN?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-18",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure IAM least privilege policies for deployment CI/CD users?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-19",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS CodePipeline webhooks for automatic builds?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-20",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 CORS configuration requirements for assets?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-21",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront Lambda@Edge vs CloudFront Functions for header injection?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-22",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle Route 53 health checks and active-passive failover?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-23",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure Cognito MFA token checks on client applications?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-24",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS Amplify console branch deployments?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-25",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 lifecycle policies for build artifacts?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-26",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront invalidation strategies during production deploys?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-27",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle ACM SSL/TLS certificate DNS validation?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-28",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure Cognito social login integrations (OAuth2/OIDC)?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-29",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS API Gateway CORS preflight handler rules?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-30",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 encryption keys at rest (SSE-S3)?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-31",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront signed cookies/URLs for premium client content?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-32",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle WAF (Web Application Firewall) rate limit rules on CDN?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-33",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure IAM least privilege policies for deployment CI/CD users?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-34",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS CodePipeline webhooks for automatic builds?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-35",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 versioning features for quick rollback?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-36",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront caching policies vs origin request policies?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-37",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle Route 53 health checks and active-passive failover?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-38",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure Cognito MFA token checks on client applications?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-39",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS Amplify console branch deployments?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-40",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 CORS configuration requirements for assets?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-41",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront Lambda@Edge vs CloudFront Functions for header injection?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-42",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle ACM SSL/TLS certificate DNS validation?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-43",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure Cognito social login integrations (OAuth2/OIDC)?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-44",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS API Gateway CORS preflight handler rules?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-45",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 lifecycle policies for build artifacts?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  },
+  {
+    "id": "aws-46",
+    "category": "CloudFront CDN & Edge",
+    "question": "Explain CloudFront invalidation strategies during production deploys?",
+    "snippet": null,
+    "answer": "Optimize CDN performance. CloudFront Functions execute extremely fast at the edge for headers/redirects. Invalidations purge old cached assets (like index.html) so clients fetch the new version immediately."
+  },
+  {
+    "id": "aws-47",
+    "category": "DNS & Security (Route 53/ACM)",
+    "question": "How do you handle WAF (Web Application Firewall) rate limit rules on CDN?",
+    "snippet": null,
+    "answer": "Secure domain configurations. ACM generates DNS CNAME records to validate domain ownership. Route 53 routing policies redirect traffic to backup static bucket endpoints if the primary servers crash."
+  },
+  {
+    "id": "aws-48",
+    "category": "IAM & Cognito Auth",
+    "question": "Explain how to configure IAM least privilege policies for deployment CI/CD users?",
+    "snippet": null,
+    "answer": "Manage access rules. For CI/CD (GitHub Actions), create an IAM role with access limited to S3 putObject and CloudFront invalidations. Connect Google/Apple OAuth directly via Cognito User Pool endpoints."
+  },
+  {
+    "id": "aws-49",
+    "category": "CI/CD & Serverless",
+    "question": "Explain the usage of AWS CodePipeline webhooks for automatic builds?",
+    "snippet": null,
+    "answer": "Setup CI/CD deployment channels. API Gateway must support OPTIONS requests returning Access-Control-Allow-Origin headers to satisfy standard browser CORS checks for client requests."
+  },
+  {
+    "id": "aws-50",
+    "category": "S3 Storage & Hosting",
+    "question": "Explain S3 encryption keys at rest (SSE-S3)?",
+    "snippet": "// CORS configuration XML/JSON structure\n[\n  {\n    \"AllowedHeaders\": [\"*\"],\n    \"AllowedMethods\": [\"GET\"],\n    \"AllowedOrigins\": [\"*\"]\n  }\n]",
+    "answer": "Configure this to manage frontend files on S3. CORS policies enable client applications on other domains to fetch resources like fonts or images. Lifecycle policies clean up old build versions automatically to save costs."
+  }
+]

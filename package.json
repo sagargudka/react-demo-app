@@ -1,0 +1,16 @@
+{
+  "name": "react-demo-app-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=host\" \"npm run dev --workspace=mfe-react\" \"npm run dev --workspace=mfe-vue\"",
+    "build": "npm run build --workspaces",
+    "build:gh-pages": "node scripts/build-gh-pages.js",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}
