@@ -72,10 +72,10 @@ function build() {
     console.log(`Generated production import map at: ${importMapPath}`);
 
     // 7. Duplicate index.html to 404.html to resolve SPA router reloads on GitHub Pages
-    const indexHtml = path.join(hostDist, 'index.html');
-    const fallbackHtml = path.join(hostDist, '404.html');
-    fs.copyFileSync(indexHtml, fallbackHtml);
-    console.log('Duplicated index.html as 404.html for routing fallback.');
+    // 8. Create .nojekyll file to prevent GitHub Pages from parsing markdown files with Jekyll (fixes Liquid syntax errors)
+    const noJekyllPath = path.join(hostDist, '.nojekyll');
+    fs.writeFileSync(noJekyllPath, '');
+    console.log('Created .nojekyll file to disable Jekyll processing on GitHub Pages.');
 
     console.log('--- Consolidation Complete! ---');
     console.log(`Ready for deployment. Target directory: ${hostDist}`);
