@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAppStore } from './store'
 import ErrorBoundary from './components/ErrorBoundary'
 import F2FChallenges from './components/F2FChallenges'
+import { SessionNotes } from './SessionNotes'
 import pkg from '../package.json'
 
 interface QuestionItem {
@@ -122,6 +123,8 @@ function App() {
       dataUrl = `${base}data/testing.json`
     } else if (currentPath === '/aws') {
       dataUrl = `${base}data/aws.json`
+    } else if (currentPath === '/system-design') {
+      dataUrl = `${base}data/system-design.json`
     }
 
     if (dataUrl) {
@@ -195,7 +198,7 @@ function App() {
   }
 
   const isMfeRoute = (currentPath === '/' || currentPath === '/microfrontend') && mfeSubTab === 'demo'
-  const isQuestionRoute = currentPath === '/react-learnings' || currentPath === '/frontend-learnings' || currentPath === '/react-testing' || currentPath === '/aws' || ((currentPath === '/microfrontend' || currentPath === '/') && mfeSubTab === 'questions')
+  const isQuestionRoute = currentPath === '/react-learnings' || currentPath === '/frontend-learnings' || currentPath === '/react-testing' || currentPath === '/aws' || currentPath === '/system-design' || ((currentPath === '/microfrontend' || currentPath === '/') && mfeSubTab === 'questions')
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: '1200px', margin: '0 auto', padding: '20px', boxSizing: 'border-box' }}>
@@ -207,7 +210,9 @@ function App() {
         <button onClick={() => navigateTo('/frontend-learnings')} style={{ background: currentPath === '/frontend-learnings' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>Frontend Learnings</button>
         <button onClick={() => navigateTo('/react-testing')} style={{ background: currentPath === '/react-testing' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>React Testing</button>
         <button onClick={() => navigateTo('/aws')} style={{ background: currentPath === '/aws' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>AWS</button>
+        <button onClick={() => navigateTo('/system-design')} style={{ background: currentPath === '/system-design' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>System Design</button>
         <button onClick={() => navigateTo('/f2f-challenges')} style={{ background: currentPath === '/f2f-challenges' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>F2F Coding</button>
+        <button onClick={() => navigateTo('/session-notes')} style={{ background: currentPath === '/session-notes' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>Session Notes</button>
       </nav>
 
       {/* Subtabs for Microfrontend Route */}
@@ -321,6 +326,11 @@ function App() {
           {/* F2F Challenges Page */}
           {currentPath === '/f2f-challenges' && (
             <F2FChallenges />
+          )}
+
+          {/* Session Notes Page */}
+          {currentPath === '/session-notes' && (
+            <SessionNotes />
           )}
 
           {/* Interactive Question Database Router */}

@@ -114,379 +114,379 @@
   {
     "id": "react-q-17",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Error boundaries limits (async/event errors) in modern React.",
-    "snippet": "// Example related to Error boundaries limits (async/event errors)\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Error boundaries limits (async/event errors). Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain Server Actions in React 19 with a form submission example.",
+    "snippet": "// Server Action file (actions.js)\n'use server';\n\nexport async function subscribeUser(formData) {\n  const email = formData.get('email');\n  // Save to DB directly or call external API\n  await db.subscribe({ email });\n  return { success: true };\n}\n\n// Client Component (Form.jsx)\n'use client';\nimport { subscribeUser } from './actions';\n\nexport function Form() {\n  return (\n    <form action={subscribeUser}>\n      <input type=\"email\" name=\"email\" required />\n      <button type=\"submit\">Subscribe</button>\n    </form>\n  );\n}",
+    "answer": "Server Actions in React 19 allow Client Components to invoke async server-side functions directly from form submissions or event handlers. By adding 'use server' at the top of the action file or function, React handles the POST request, serialization, and response automatically, reducing boilerplate API routes."
   },
   {
     "id": "react-q-18",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of State updates batching in setTimeout/promises in modern React.",
-    "snippet": "// Example related to State updates batching in setTimeout/promises\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes State updates batching in setTimeout/promises. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how ref is passed as a prop in React 19 and how it replaces forwardRef.",
+    "snippet": "// React 19 custom input component\nfunction CustomInput({ label, ref }) {\n  return (\n    <label>\n      {label}\n      <input ref={ref} />\n    </label>\n  );\n}\n\n// Parent component usage\nexport function Parent() {\n  const inputRef = useRef(null);\n  return <CustomInput ref={inputRef} label=\"Username\" />;\n}",
+    "answer": "In React 19, forwardRef is deprecated. The 'ref' is now passed directly as a standard prop in function components, just like any other prop. This simplifies component signatures, removes forwardRef boilerplate, and improves TS type inferencing."
   },
   {
     "id": "react-q-19",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Server Components vs Client Components in React 19 in modern React.",
-    "snippet": "// Example related to Server Components vs Client Components in React 19\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Server Components vs Client Components in React 19. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the concept of Document Metadata support in React 19.",
+    "snippet": "export function BlogPost({ post }) {\n  return (\n    <article>\n      {/* React 19 automatically hoists these tags to the document header */}\n      <title>{post.title}</title>\n      <meta name=\"description\" content={post.excerpt} />\n      <link rel=\"canonical\" href={`https://site.com/blog/${post.slug}`} />\n      \n      <h1>{post.title}</h1>\n      <p>{post.body}</p>\n    </article>\n  );\n}",
+    "answer": "React 19 introduces native support for document metadata tags (<title>, <meta>, <link>). When these components are rendered anywhere in your component tree, React automatically hoists them to the HTML <head> section, resolving duplicates and rendering them correctly on both SSR and client-side runs."
   },
   {
     "id": "react-q-20",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Virtual DOM reconciliation and diffing algorithms in modern React.",
-    "snippet": "// Example related to Virtual DOM reconciliation and diffing algorithms\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Virtual DOM reconciliation and diffing algorithms. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how React 19 supports stylesheets and asset preloading.",
+    "snippet": "import { preinit } from 'react-dom';\n\nexport function Component() {\n  // Preloads and runs a script in the background before rendering\n  preinit('https://example.com/analytics.js', { as: 'script' });\n\n  return (\n    <main>\n      {/* Style sheets are automatically loaded and hydrated with suspense */}\n      <link rel=\"stylesheet\" href=\"styles.css\" precedence=\"high\" />\n      <h1>Welcome to React 19 Asset Preloading</h1>\n    </main>\n  );\n}",
+    "answer": "React 19 integrates asset loading (stylesheets, scripts, fonts) directly into the component lifecycle. Using the 'precedence' prop on <link>, React loads stylesheets dynamically and suspends rendering until they load to prevent flash of unstyled content. Resource loading APIs like prefetchDNS, preconnect, preload, and preinit can also be invoked programmatically."
   },
   {
     "id": "react-q-21",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Synthetic Event wrappers and delegation in React in modern React.",
-    "snippet": "// Example related to Synthetic Event wrappers and delegation in React\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Synthetic Event wrappers and delegation in React. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how Custom Elements (Web Components) support is improved in React 19.",
+    "snippet": "// React 19 handles properties and attributes natively\nexport function CustomElementContainer() {\n  return (\n    <my-web-component\n      api-key=\"12345\"             {/* Attribute */}\n      userProfile={{ name: 'AI' }}  {/* Set as custom property */}\n      oncustomchange={(e) => console.log(e.detail)} {/* Custom Event */}\n    />\n  );\n}",
+    "answer": "In previous versions of React, attributes and properties of custom elements were difficult to manage, and custom events had to be bound manually using ref addEventListener. React 19 natively parses properties vs attributes, automatically maps event handlers starting with 'on', and handles property binding correctly without requiring wrappers."
   },
   {
     "id": "react-q-22",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Strict Mode checks and intentional double-invoking in modern React.",
-    "snippet": "// Example related to Strict Mode checks and intentional double-invoking\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Strict Mode checks and intentional double-invoking. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the role of the React Compiler (React Forget) in React 19.",
+    "snippet": "// Before React Compiler: manual memoization required to avoid re-renders\n// const Component = () => {\n//   const value = useMemo(() => compute(prop), [prop]);\n//   const onClick = useCallback(() => act(), []);\n// }\n\n// With React Compiler in React 19:\nexport function AutoMemoizedList({ items }) {\n  // Memoized automatically at build time! No useMemo or useCallback needed.\n  const sorted = items.sort((a, b) => a.val - b.val);\n  return <ul>{sorted.map(i => <li key={i.id}>{i.name}</li>)}</ul>;\n}",
+    "answer": "The React Compiler is a build-time tool introduced in React 19 that automatically memoizes components, hooks, and dependencies. It analyzes JavaScript code semantics and injects caching code where necessary, eliminating the manual runtime use of useMemo and useCallback hooks and resolving rendering bottlenecks."
   },
   {
     "id": "react-q-23",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Concurrent rendering features and rendering fibers in modern React.",
-    "snippet": "// Example related to Concurrent rendering features and rendering fibers\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Concurrent rendering features and rendering fibers. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how ref callbacks can return cleanup functions in React 19.",
+    "snippet": "export function ResizeTracker() {\n  return (\n    <div\n      ref={(node) => {\n        if (!node) return;\n        const observer = new ResizeObserver((entries) => console.log(entries));\n        observer.observe(node);\n\n        // React 19 cleanup function returned directly from callback ref\n        return () => observer.disconnect();\n      }}\n    >\n      Resize sensor target\n    </div>\n  );\n}",
+    "answer": "React 19 adds support for cleanup functions in callback refs. When a component unmounts or the ref target changes, React automatically runs the function returned by the ref callback. This eliminates the need to manually track nodes in useEffect and write separate cleanups."
   },
   {
     "id": "react-q-24",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Context API performance bottlenecks and mitigation in modern React.",
-    "snippet": "// Example related to Context API performance bottlenecks and mitigation\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Context API performance bottlenecks and mitigation. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the React 19 Server Components vs Client Components execution boundaries.",
+    "snippet": "// Server Component (default)\nimport DB from './db';\nimport { ClientForm } from './ClientForm';\n\nexport async function ServerComponent() {\n  const users = await DB.getUsers();\n  return (\n    <div>\n      <h1>Users List (Fetched on Server)</h1>\n      {/* Client Component boundary */}\n      <ClientForm initialUsers={users} />\n    </div>\n  );\n}",
+    "answer": "React Server Components (RSC) run only on the server, allowing direct database access and reducing client bundle sizes. Client Components are marked with 'use client' and run in both SSR and on the client for interactivity. When passing data across boundaries, props must be JSON-serializable."
   },
   {
     "id": "react-q-25",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of HOCs vs Render Props vs Hooks comparison in modern React.",
-    "snippet": "// Example related to HOCs vs Render Props vs Hooks comparison\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes HOCs vs Render Props vs Hooks comparison. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how the use hook works with React Context inside conditionals or loops.",
+    "snippet": "import { use } from 'react';\nimport { ThemeContext } from './ThemeContext';\n\nexport function ConditionalThemeCard({ showTheme }) {\n  let themeName = 'default';\n  if (showTheme) {\n    // Valid in React 19! Regular useContext would throw error here.\n    const theme = use(ThemeContext);\n    themeName = theme.name;\n  }\n  return <div className={`card-${themeName}`}>Content</div>;\n}",
+    "answer": "Unlike traditional hooks, the React 19 'use' hook can be called conditionally and inside loops. This allows reading React Context values dynamically anywhere inside your component render path, rendering useContext obsolete for advanced conditional checks."
   },
   {
     "id": "react-q-26",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of React portals and rendering external DOM paths in modern React.",
-    "snippet": "// Example related to React portals and rendering external DOM paths\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes React portals and rendering external DOM paths. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how Server Actions serialize data and what security considerations apply.",
+    "snippet": "// Server Action (actions.js)\n'use server';\n\nexport async function updateProfile(userId, formData) {\n  // userId is encrypted when passed from Client to Server Action\n  const email = formData.get('email');\n  await db.users.update(userId, { email });\n}",
+    "answer": "Server Actions transfer arguments between the client and server using JSON serialization. React 19 automatically encrypts closure variables or bound arguments of a Server Action so that the client cannot view or modify the underlying database keys, credentials, or hidden parameters."
   },
   {
     "id": "react-q-27",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Error boundaries limits (async/event errors) in modern React.",
-    "snippet": "// Example related to Error boundaries limits (async/event errors)\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Error boundaries limits (async/event errors). Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the new Activity (Offscreen) API in React 19 and its use case.",
+    "snippet": "import { Activity } from 'react';\n\nexport function Tabs({ activeTab }) {\n  return (\n    <div>\n      {/* Active panel runs and displays normal updates */}\n      <Activity mode={activeTab === 'home' ? 'visible' : 'hidden'}>\n        <HomePanel />\n      </Activity>\n      {/* Hidden panel is paused in memory without losing state or DOM structures */}\n      <Activity mode={activeTab === 'profile' ? 'visible' : 'hidden'}>\n        <ProfilePanel />\n      </Activity>\n    </div>\n  );\n}",
+    "answer": "The Activity API (internally referred to as Offscreen) allows React to pause rendering, side-effects, and layout calculations of hidden component branches while preserving their internal state and DOM layout in memory. It's highly beneficial for tab systems, caching route states, and pre-rendering pages in the background."
   },
   {
     "id": "react-q-28",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of State updates batching in setTimeout/promises in modern React.",
-    "snippet": "// Example related to State updates batching in setTimeout/promises\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes State updates batching in setTimeout/promises. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the use hook handling rejected Promises with Error Boundaries.",
+    "snippet": "import { use, Suspense } from 'react';\nimport { ErrorBoundary } from './ErrorBoundary';\n\nfunction WeatherInfo({ dataPromise }) {\n  const weather = use(dataPromise);\n  return <p>Temperature: {weather.temp}°C</p>;\n}\n\nexport function WeatherDisplay({ dataPromise }) {\n  return (\n    <ErrorBoundary fallback={<p>Error: Failed to fetch weather</p>}>\n      <Suspense fallback={<p>Loading weather info...</p>}>\n        <WeatherInfo dataPromise={dataPromise} />\n      </Suspense>\n    </ErrorBoundary>\n  );\n}",
+    "answer": "When the 'use' hook is called with a Promise that rejects, React treats it as a rendering exception and bubble it up the component tree. The rejected Promise is caught by the nearest Error Boundary, which displays its fallback UI, allowing elegant error handling for inline async resources."
   },
   {
     "id": "react-q-29",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Server Components vs Client Components in React 19 in modern React.",
-    "snippet": "// Example related to Server Components vs Client Components in React 19\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Server Components vs Client Components in React 19. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain State updates batching in setTimeout/promises in modern React.",
+    "snippet": "function BatchDemo() {\n  const [count, setCount] = useState(0);\n  const [status, setStatus] = useState('idle');\n\n  const handleClick = () => {\n    setTimeout(() => {\n      // React 18 & 19 automatically batches these updates into a single render!\n      setCount(c => c + 1);\n      setStatus('updated');\n    }, 1000);\n  };\n\n  return <button onClick={handleClick}>{count} - {status}</button>;\n}",
+    "answer": "Since React 18, automatic batching covers state updates inside setTimeout, promises, fetch requests, and native events. Updates are grouped together, resulting in a single re-render of the component tree, which improves rendering performance and prevents inconsistent UI states."
   },
   {
     "id": "react-q-30",
     "category": "Hooks & State Management",
-    "question": "Explain the concept of Virtual DOM reconciliation and diffing algorithms in modern React.",
-    "snippet": "// Example related to Virtual DOM reconciliation and diffing algorithms\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Virtual DOM reconciliation and diffing algorithms. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain Context API performance bottlenecks and mitigation strategies.",
+    "snippet": "// Split context to prevent unnecessary re-renders\nconst StateContext = createContext(null);\nconst DispatchContext = createContext(null);\n\nexport function StateProvider({ children }) {\n  const [state, dispatch] = useReducer(reducer, initial);\n  return (\n    <StateContext.Provider value={state}>\n      <DispatchContext.Provider value={dispatch}>\n        {children}\n      </DispatchContext.Provider>\n    </StateContext.Provider>\n  );\n}",
+    "answer": "Context API triggers a re-render in all consuming components whenever the context value changes. To mitigate performance bottlenecks: 1) split contexts into state and dispatch providers, 2) memoize intermediate child components, or 3) use fine-grained external state libraries like Zustand."
   },
   {
     "id": "react-q-31",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Synthetic Event wrappers and delegation in React in modern React.",
-    "snippet": "// Example related to Synthetic Event wrappers and delegation in React\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Synthetic Event wrappers and delegation in React. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Compare Higher-Order Components (HOCs) vs Render Props vs Custom Hooks.",
+    "snippet": "// 1. Custom Hook (Recommended, cleanest logic reuse)\nconst useWindowWidth = () => {\n  const [width, setWidth] = useState(window.innerWidth);\n  // handle resize...\n  return width;\n};\n\n// 2. Render Props (Exposes state inside render template)\n// <WindowTracker render={width => <div>Width: {width}</div>} />\n\n// 3. HOC (Wraps component, adds props dynamically)\n// export default withWindowTracker(MyComponent);",
+    "answer": "HOCs wrap components, which can lead to prop name collisions and wrapper hell. Render Props expose functions inside templates, creating nested XML structures. Custom hooks are the modern standard: they allow sharing stateful logic without changing component hierarchy or adding markup wrapping."
   },
   {
     "id": "react-q-32",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Strict Mode checks and intentional double-invoking in modern React.",
-    "snippet": "// Example related to Strict Mode checks and intentional double-invoking\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Strict Mode checks and intentional double-invoking. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain custom hooks design patterns and how to build one.",
+    "snippet": "import { useState, useEffect } from 'react';\n\nexport function useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const saved = localStorage.getItem(key);\n    return saved ? JSON.parse(saved) : initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue];\n}",
+    "answer": "Custom hooks are JavaScript functions that start with 'use' and can invoke other hooks. They extract reusable stateful logic from components. Crucially, calling a custom hook shares the stateful *logic*, not the actual *state* itself: each component invocation receives a fully isolated state copy."
   },
   {
     "id": "react-q-33",
     "category": "Hooks & State Management",
-    "question": "Explain the concept of Concurrent rendering features and rendering fibers in modern React.",
-    "snippet": "// Example related to Concurrent rendering features and rendering fibers\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Concurrent rendering features and rendering fibers. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain stale closures in React hooks and how to solve them.",
+    "snippet": "useEffect(() => {\n  const timer = setInterval(() => {\n    // STALE CLOSURE: count will always reference its value at effect mount (0)\n    // console.log(count);\n    \n    // FIX: use functional state updater to read current state\n    setCount(prev => prev + 1);\n  }, 1000);\n  return () => clearInterval(timer);\n}, []); // Empty dependencies creates a closure over initial count",
+    "answer": "A stale closure occurs when a hook (like useEffect, useCallback, or useMemo) captures a state variable inside its closure and retains an outdated reference because the state variable was not added to the dependency array. Fixes include: adding the variable to dependencies, or using functional state updates (e.g. setCount(c => c + 1))."
   },
   {
     "id": "react-q-34",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Context API performance bottlenecks and mitigation in modern React.",
-    "snippet": "// Example related to Context API performance bottlenecks and mitigation\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Context API performance bottlenecks and mitigation. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain why derived state is preferred over syncing state with useEffect.",
+    "snippet": "function FullNameComponent({ firstName, lastName }) {\n  // GOOD: Calculated dynamically during rendering phase. No useEffect needed!\n  const fullName = `${firstName} ${lastName}`;\n\n  // BAD: Redundant state and extra re-renders!\n  // const [fullName, setFullName] = useState('');\n  // useEffect(() => { setFullName(firstName + ' ' + lastName); }, [firstName, lastName]);\n\n  return <h1>{fullName}</h1>;\n}",
+    "answer": "Derived state is state calculated directly during the render phase. Syncing state using useEffect when props or state change leads to extra rendering cycles, stale UI states, and complex dependency code. Rendering calculated values inline is much more performant and robust."
   },
   {
     "id": "react-q-35",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of HOCs vs Render Props vs Hooks comparison in modern React.",
-    "snippet": "// Example related to HOCs vs Render Props vs Hooks comparison\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes HOCs vs Render Props vs Hooks comparison. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain when to use useReducer vs useState in complex component designs.",
+    "snippet": "// Complex reducer manages structured updates\nfunction reducer(state, action) {\n  switch (action.type) {\n    case 'field': return { ...state, [action.name]: action.val };\n    case 'reset': return { username: '', email: '', isValid: false };\n    default: return state;\n  }\n}\n// useReducer consolidates dispatch actions into a single state update model\nconst [state, dispatch] = useReducer(reducer, { username: '', email: '', isValid: false });",
+    "answer": "Use useState for simple, independent state primitives (strings, numbers, simple toggles). Use useReducer when state transitions are complex, state properties depend on each other, or the next state is contingent on the previous state, as it groups update logic into a single testable reducer function."
   },
   {
     "id": "react-q-36",
     "category": "Hooks & State Management",
-    "question": "Explain the concept of React portals and rendering external DOM paths in modern React.",
-    "snippet": "// Example related to React portals and rendering external DOM paths\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes React portals and rendering external DOM paths. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how to prevent hydration mismatches when initializing state from localStorage.",
+    "snippet": "export function DarkModeToggle() {\n  // Safe initialization that avoids hydration mismatches on server\n  const [isDark, setIsDark] = useState(false);\n\n  useEffect(() => {\n    // Access client-only values in useEffect after hydration has completed\n    const saved = localStorage.getItem('theme') === 'dark';\n    setIsDark(saved);\n  }, []);\n\n  return <button>{isDark ? 'Dark Mode' : 'Light Mode'}</button>;\n}",
+    "answer": "Hydration mismatches occur when the initial HTML rendered by the server does not match the initial render of the client. Initializing state from localStorage directly in useState on mount will break because the server has no localStorage access. To prevent this, initialize with default values, and query localStorage in a client-only useEffect."
   },
   {
     "id": "react-q-37",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Error boundaries limits (async/event errors) in modern React.",
-    "snippet": "// Example related to Error boundaries limits (async/event errors)\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Error boundaries limits (async/event errors). Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain how React 19 handles form reset actions and pending states.",
+    "snippet": "import { useActionState } from 'react';\n\nasync function submitMessage(prevState, formData) {\n  await api.sendMessage(formData.get('text'));\n  return { sent: true };\n}\n\nexport function Form() {\n  const [state, formAction, isPending] = useActionState(submitMessage, { sent: false });\n  // Form Action automatically sets form fields to read-only during submission\n  return (\n    <form action={formAction}>\n      <textarea name=\"text\" disabled={isPending} />\n      <button type=\"submit\">{isPending ? 'Sending...' : 'Send'}</button>\n    </form>\n  );\n}",
+    "answer": "React 19 updates form actions to manage asynchronous lifecycles. When a form action is running, React handles pending status natively, disables form elements automatically if configured, and allows integrating form validation libraries directly using return objects from useActionState."
   },
   {
     "id": "react-q-38",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of State updates batching in setTimeout/promises in modern React.",
-    "snippet": "// Example related to State updates batching in setTimeout/promises\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes State updates batching in setTimeout/promises. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain the concept of structural sharing and immutability in React state updates.",
+    "snippet": "const [user, setUser] = useState({ name: 'Sagar', skills: ['React'] });\n\nconst addSkill = (newSkill) => {\n  // Correct: Copy object and array to trigger reference changes\n  setUser(prev => ({\n    ...prev,\n    skills: [...prev.skills, newSkill]\n  }));\n\n  // Incorrect: Mutates old reference, React ignores update\n  // user.skills.push(newSkill); setUser(user);\n};",
+    "answer": "React detects state changes using strict equality comparison (===). If you mutate an object or array directly, the object reference remains identical, and React will not trigger a re-render. Immutability creates a new reference containing modified structures, ensuring React safely registers the updates."
   },
   {
     "id": "react-q-39",
     "category": "Hooks & State Management",
-    "question": "Explain the concept of Server Components vs Client Components in React 19 in modern React.",
-    "snippet": "// Example related to Server Components vs Client Components in React 19\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Server Components vs Client Components in React 19. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how to abort fetching operations in useEffect to avoid memory leaks.",
+    "snippet": "useEffect(() => {\n  const controller = new AbortController();\n\n  async function fetchData() {\n    try {\n      const res = await fetch('/api/data', { signal: controller.signal });\n      const json = await res.json();\n      setData(json);\n    } catch (err) {\n      if (err.name !== 'AbortError') console.error(err);\n    }\n  }\n  fetchData();\n  // Cleanup function aborts fetch if component unmounts before resolve\n  return () => controller.abort();\n}, []);",
+    "answer": "If a component initiates a network request and unmounts before the request completes, setting state on the unmounted component can cause performance issues or errors. Using an AbortController in useEffect cleanup cancels the active request, resolving async memory leaks."
   },
   {
     "id": "react-q-40",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Virtual DOM reconciliation and diffing algorithms in modern React.",
-    "snippet": "// Example related to Virtual DOM reconciliation and diffing algorithms\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Virtual DOM reconciliation and diffing algorithms. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Hooks & State Management",
+    "question": "Explain the differences between useTransition and useDeferredValue.",
+    "snippet": "const [isPending, startTransition] = useTransition();\nconst [search, setSearch] = useState('');\nconst deferredList = useDeferredValue(list);\n\n// useTransition wraps the update function itself:\nconst handleInput = (e) => {\n  startTransition(() => {\n    setSearch(e.target.value);\n  });\n};",
+    "answer": "useTransition is used to defer state updates by wrapping the state setter function itself. useDeferredValue takes a value that updates immediately (e.g. from props or an un-deferred state) and creates a deferred copy of that value, lagging behind the main update to avoid choking the thread on heavy child updates."
   },
   {
     "id": "react-q-41",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Synthetic Event wrappers and delegation in React in modern React.",
-    "snippet": "// Example related to Synthetic Event wrappers and delegation in React\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Synthetic Event wrappers and delegation in React. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain Virtual DOM reconciliation and the O(n) heuristic diffing algorithm.",
+    "snippet": "// Key prop tells React which nodes map across renders\n<ul>\n  <li key=\"item-a\">Node A</li>\n  <li key=\"item-b\">Node B</li>\n</ul>",
+    "answer": "Calculating full tree changes has O(n^3) complexity. React uses a heuristic O(n) algorithm based on two assumptions: 1) Two elements of different types will produce different trees, and 2) Developer keys indicate elements that are stable across renders. If element types differ, React destroys and rebuilds the node and all children."
   },
   {
     "id": "react-q-42",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Strict Mode checks and intentional double-invoking in modern React.",
-    "snippet": "// Example related to Strict Mode checks and intentional double-invoking\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Strict Mode checks and intentional double-invoking. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain Synthetic Event wrappers and delegation in React.",
+    "snippet": "// React binds click events to the root element (document / container)\n// and simulates bubble flow with its own SyntheticEvent wrapper.\n<button onClick={(e) => {\n  console.log(e.nativeEvent); // Actual browser event\n  console.log(e.isPropagationStopped()); // React virtual propagation\n}}>Click</button>",
+    "answer": "React doesn't attach event handlers directly to individual DOM nodes. Instead, it delegates all events to a single root listener (the container element). It wraps browser events in a cross-browser SyntheticEvent instance. In React 17+, event delegation shifted from the document root to the root element containing the React app tree."
   },
   {
     "id": "react-q-43",
     "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Concurrent rendering features and rendering fibers in modern React.",
-    "snippet": "// Example related to Concurrent rendering features and rendering fibers\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Concurrent rendering features and rendering fibers. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain Strict Mode checks and intentional double-invoking.",
+    "snippet": "// StrictMode renders components twice in Development mode\n// to ensure there are no side-effects in rendering logic.\n<React.StrictMode>\n  <App />\n</React.StrictMode>",
+    "answer": "Strict Mode forces double-rendering of components, initializers, state actions, and effects in development. Render functions should be pure (no side effects). Double-invoking helps developers catch mutations, memory leaks, and logic that relies on single render cycles before shipping to production."
   },
   {
     "id": "react-q-44",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Context API performance bottlenecks and mitigation in modern React.",
-    "snippet": "// Example related to Context API performance bottlenecks and mitigation\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Context API performance bottlenecks and mitigation. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain Concurrent rendering features and the concept of rendering fibers.",
+    "snippet": "// React splits rendering into small slices of work\n// and updates priorities using lanes.\n// Internally, it keeps yielding to main browser thread.\n// fiber node structure:\n// { tag, key, type, stateNode, child, sibling, return, lanes }",
+    "answer": "Concurrent rendering allows React to interrupt a long rendering cycle to process high-priority user actions (like typing) and resume it later. A Fiber is React's unit of work. Fibers form a linked list pointing to children, siblings, and parent nodes, allowing React to pause, discard, or prioritize rendering work slices."
   },
   {
     "id": "react-q-45",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of HOCs vs Render Props vs Hooks comparison in modern React.",
-    "snippet": "// Example related to HOCs vs Render Props vs Hooks comparison\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes HOCs vs Render Props vs Hooks comparison. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain React portals and rendering external DOM paths.",
+    "snippet": "import { createPortal } from 'react-dom';\n\nexport function Modal({ children }) {\n  // Renders children directly inside the document.body element\n  return createPortal(\n    <div className=\"modal\">{children}</div>,\n    document.body\n  );\n}",
+    "answer": "React Portals allow rendering a component outside its parent DOM hierarchy while preserving its logical place in the React component tree. This is essential for modals, tooltips, and drop-downs. Crucially, events bubble up the React tree structure (e.g. portal events still trigger onClick on virtual parents), not the physical DOM tree."
   },
   {
     "id": "react-q-46",
     "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of React portals and rendering external DOM paths in modern React.",
-    "snippet": "// Example related to React portals and rendering external DOM paths\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes React portals and rendering external DOM paths. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain the limits of Error Boundaries and which errors they cannot catch.",
+    "snippet": "class ErrorBoundary extends React.Component {\n  state = { hasError: false };\n  static getDerivedStateFromError() { return { hasError: true }; }\n  componentDidCatch(error, info) { console.error(error); }\n  render() {\n    if (this.state.hasError) return <h2>Something went wrong</h2>;\n    return this.props.children;\n  }\n}",
+    "answer": "Error Boundaries are React components that catch JS errors anywhere in their child component tree. However, they cannot catch errors inside: 1) Event handlers (must use try-catch), 2) Asynchronous code (e.g. setTimeout or promises), 3) Server-Side Rendering, or 4) Errors thrown inside the boundary component itself."
   },
   {
     "id": "react-q-47",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Error boundaries limits (async/event errors) in modern React.",
-    "snippet": "// Example related to Error boundaries limits (async/event errors)\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Error boundaries limits (async/event errors). Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain the double-buffering rendering optimization in React Fiber.",
+    "snippet": "// React keeps two Fiber trees in memory:\n// 1) current (currently visible on the screen)\n// 2) workInProgress (constructed in memory during rendering)\n// Once rendering is complete, the pointer swaps current = workInProgress.",
+    "answer": "React Fiber uses a double-buffering technique to avoid rendering half-completed trees to the user. React first constructs a 'workInProgress' tree in memory. During this phase, it can yield execution. When rendering is done, React updates its internal pointer to swap the trees, showing updates instantly on screen."
   },
   {
     "id": "react-q-48",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of State updates batching in setTimeout/promises in modern React.",
-    "snippet": "// Example related to State updates batching in setTimeout/promises\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes State updates batching in setTimeout/promises. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain the difference between the Render phase and the Commit phase in React.",
+    "snippet": "// Phase 1: Render (Asynchronous, interruptible, calculates changes)\n// Phase 2: Commit (Synchronous, uninterruptible, writes to browser DOM)",
+    "answer": "During the Render phase, React traverses the fiber tree and determines changes (mutations) to apply to the DOM. This phase is non-blocking and can be paused or restarted. During the Commit phase, React applies the changes to the DOM and runs effects (useLayoutEffect, useEffect). This phase is synchronous to avoid visual stutter."
   },
   {
     "id": "react-q-49",
     "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Server Components vs Client Components in React 19 in modern React.",
-    "snippet": "// Example related to Server Components vs Client Components in React 19\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Server Components vs Client Components in React 19. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how Suspense works under the hood when fetching data.",
+    "snippet": "function ProjectDetails() {\n  const data = readProjectData(); // Throws promise if data is still loading\n  return <h1>{data.name}</h1>;\n}\n\n// Suspense catches the thrown promise and displays the fallback\n// <Suspense fallback={<Spinner />}><ProjectDetails /></Suspense>",
+    "answer": "When a component under Suspense tries to load async data, it throws a Promise (or 'thenable') instead of returning React elements. Suspense catches this thrown Promise, temporarily halts rendering that component branch, displays the fallback UI, and resumes rendering once the Promise resolves."
   },
   {
     "id": "react-q-50",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Virtual DOM reconciliation and diffing algorithms in modern React.",
-    "snippet": "// Example related to Virtual DOM reconciliation and diffing algorithms\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Virtual DOM reconciliation and diffing algorithms. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain the purpose of FlushSync and when it should be used.",
+    "snippet": "import { flushSync } from 'react-dom';\n\nconst handleClick = () => {\n  flushSync(() => {\n    // Forces immediate, synchronous DOM layout write\n    setOpen(true);\n  });\n  // DOM is updated here. Safe to run element measurements\n  const rect = ref.current.getBoundingClientRect();\n};",
+    "answer": "flushSync forces React to exit automatic batching and execute state updates synchronously, updating the DOM immediately. It should be used sparingly, mostly for third-party library integrations, focus management, or browser APIs where you must measure layout values instantly after updating state."
   },
   {
     "id": "react-q-51",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Synthetic Event wrappers and delegation in React in modern React.",
-    "snippet": "// Example related to Synthetic Event wrappers and delegation in React\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Synthetic Event wrappers and delegation in React. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain how React detects and handles infinite rendering loops.",
+    "snippet": "function InfiniteLoopComponent() {\n  const [count, setCount] = useState(0);\n  \n  // BAD: setCount triggers render, which calls setCount, creating a loop\n  setCount(count + 1);\n  \n  return <div>{count}</div>;\n}",
+    "answer": "If a component continuously updates state during its render phase, React triggers a loop. To prevent locking the browser thread, React has a built-in safety limit (usually 50 renders). Exceeding this limit throws the error: 'Maximum update depth exceeded', pointing to the component causing the render loop."
   },
   {
     "id": "react-q-52",
     "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Strict Mode checks and intentional double-invoking in modern React.",
-    "snippet": "// Example related to Strict Mode checks and intentional double-invoking\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Strict Mode checks and intentional double-invoking. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain the significance of the key prop in lists and why index should be avoided.",
+    "snippet": "// BAD: Index key can mismatch state if list items are sorted or deleted\n// items.map((x, i) => <ListItem key={i} />)\n\n// GOOD: Unique ID identifies item correctly across re-orders\nitems.map(x => <ListItem key={x.id} />)",
+    "answer": "The key prop identifies matching list elements across renders. If a list updates (sorting, inserting, deleting) and you use the array index as the key, React can mismatch stateful child nodes with their new DOM positions, causing visual bugs, stale input values, and slow rendering performance."
   },
   {
     "id": "react-q-53",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Concurrent rendering features and rendering fibers in modern React.",
-    "snippet": "// Example related to Concurrent rendering features and rendering fibers\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Concurrent rendering features and rendering fibers. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain how React schedules updates using Priority Lanes.",
+    "snippet": "// React categorizes updates into lanes representing levels of priority:\n// 1. SyncLane (Discrete events like clicks)\n// 2. InputContinuousLane (Continuous events like mousemove)\n// 3. DefaultLane (Standard API/timer updates)\n// 4. TransitionLane (useTransition/useDeferredValue updates)",
+    "answer": "React schedules and reconciles changes using Lanes (binary flags). Each update is assigned a priority lane depending on its origin. React can interrupt or discard execution of lower priority lanes (e.g. rendering list item filters) if a higher priority lane (e.g. keyboard typing input) is triggered."
   },
   {
     "id": "react-q-54",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Context API performance bottlenecks and mitigation in modern React.",
-    "snippet": "// Example related to Context API performance bottlenecks and mitigation\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Context API performance bottlenecks and mitigation. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain how React coordinates hydration on the client for Server-Side Rendered apps.",
+    "snippet": "// SSR generates HTML on the server. The client parses it,\n// renders the virtual DOM structure, matching it node-for-node,\n// and attaches event listeners without destroying/rebuilding the HTML.",
+    "answer": "Hydration is the process where React client-side code takes over server-rendered HTML. React reads the existing DOM structure, verifies that elements match the Virtual DOM output node-for-node, and binds event listeners (like onClick). If there's a structure discrepancy, it triggers a hydration warning."
   },
   {
     "id": "react-q-55",
     "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of HOCs vs Render Props vs Hooks comparison in modern React.",
-    "snippet": "// Example related to HOCs vs Render Props vs Hooks comparison\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes HOCs vs Render Props vs Hooks comparison. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain layout triggers and visual flickers in useEffect vs useLayoutEffect.",
+    "snippet": "useLayoutEffect(() => {\n  // 1. DOM renders\n  // 2. Synchronous call to adjust positioning\n  // 3. Browser paints DOM. User sees NO flicker.\n  ref.current.style.top = '100px';\n}, []);",
+    "answer": "useEffect runs asynchronously after the browser has completed layout and paint. If you alter DOM positioning in useEffect, the user will see a flash of the original state. useLayoutEffect runs synchronously before browser paint, enabling modification of layout dimensions before the pixels hit the screen."
   },
   {
     "id": "react-q-56",
-    "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of React portals and rendering external DOM paths in modern React.",
-    "snippet": "// Example related to React portals and rendering external DOM paths\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes React portals and rendering external DOM paths. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "Rendering & Fiber Architecture",
+    "question": "Explain how CSS-in-JS style rendering affects React rendering performance.",
+    "snippet": "// Dynamic style tags injected during render block the thread\n// const Button = styled.button` background: ${props => props.color}; `",
+    "answer": "Runtime CSS-in-JS libraries (e.g., Styled Components) compile styles during the React render phase, dynamically injecting <style> tags into the document head. This blocks layout calculations and invalidates browser style caches, reducing performance. Modern solutions use compile-time CSS (Tailwind, CSS Modules)."
   },
   {
     "id": "react-q-57",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Error boundaries limits (async/event errors) in modern React.",
-    "snippet": "// Example related to Error boundaries limits (async/event errors)\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Error boundaries limits (async/event errors). Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how React 19 improves diagnostic messages for hydration errors.",
+    "snippet": "// React 19 compares server and client trees and outputs:\n// - Expected: <div>\n// - Received: <p>\n// - In component: Home > Header > Warning",
+    "answer": "In previous React versions, hydration errors returned generic warnings like 'Did not match server HTML'. React 19 logs clear tree diffs showing exactly which elements mismatched, their content difference, and the exact component tree trace, allowing developers to isolate and debug SSR issues easily."
   },
   {
     "id": "react-q-58",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of State updates batching in setTimeout/promises in modern React.",
-    "snippet": "// Example related to State updates batching in setTimeout/promises\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes State updates batching in setTimeout/promises. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the useActionState validation and error reporting flow.",
+    "snippet": "// Client Component\nasync function handleAction(prevState, formData) {\n  const email = formData.get('email');\n  if (!email.includes('@')) return { error: 'Invalid email' };\n  return { success: true };\n}\nconst [state, action] = useActionState(handleAction, {});",
+    "answer": "In React 19, useActionState manages validation and state responses from forms. When a validation error is returned from the Action, useActionState stores it in state, enabling Client Components to display validation alerts directly without manually saving errors in state hooks."
   },
   {
     "id": "react-q-59",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Server Components vs Client Components in React 19 in modern React.",
-    "snippet": "// Example related to Server Components vs Client Components in React 19\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Server Components vs Client Components in React 19. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how React 19 manages prefetching of links inside the viewport.",
+    "snippet": "// React 19 supports prefetching headers natively\nimport { prefetchDNS, preconnect } from 'react-dom';\n\nprefetchDNS('https://api.example.com');\npreconnect('https://api.example.com');",
+    "answer": "React 19 natively exposes resource hint APIs like prefetchDNS, preconnect, preload, and preinit. These can be executed programmatically, helping load scripts, stylesheets, and third-party API configurations dynamically as soon as link elements enter the browser viewport."
   },
   {
     "id": "react-q-60",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Virtual DOM reconciliation and diffing algorithms in modern React.",
-    "snippet": "// Example related to Virtual DOM reconciliation and diffing algorithms\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Virtual DOM reconciliation and diffing algorithms. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how React Server Components (RSC) serialize functions and actions.",
+    "snippet": "// RSC cannot pass standard functions as props to client components,\n// but can pass 'use server' Actions (which are serialized endpoints).\n// <ClientButton action={myServerAction} />",
+    "answer": "Since RSC executes on the server and client components run on the client, standard function references cannot be shared directly. To bridge this, React Server Components serialize client action calls into server-side endpoint URLs, resolving interactions seamlessly without manual API declarations."
   },
   {
     "id": "react-q-61",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Synthetic Event wrappers and delegation in React in modern React.",
-    "snippet": "// Example related to Synthetic Event wrappers and delegation in React\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Synthetic Event wrappers and delegation in React. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how the client-side router interacts with React 19 Suspense boundaries.",
+    "snippet": "// Router triggers route transitions inside startTransition\n// rendering pages inside Suspense boundaries to avoid flashes\n// of blank loading states.",
+    "answer": "Modern client-side routers use React 19's transition system when loading new routes. By navigating inside startTransition, the router waits for route assets and data promises to resolve, keeping the old page visible and interactive before instantly rendering the new page once fully loaded."
   },
   {
     "id": "react-q-62",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of Strict Mode checks and intentional double-invoking in modern React.",
-    "snippet": "// Example related to Strict Mode checks and intentional double-invoking\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Strict Mode checks and intentional double-invoking. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain React 19 document metadata hoisting duplicate resolution.",
+    "snippet": "// Multiple rendered components declaring <title>:\n// Component A: <title>App | Dashboard</title>\n// Component B: <title>App | Profile</title>\n// React 19 keeps only the last rendered title in <head>.",
+    "answer": "When multiple components render metadata tags like <title> or <meta>, React 19 resolves duplicate conflicts by giving precedence to the latest rendered tag in the tree, ensuring the document head contains clean, singular metadata records."
   },
   {
     "id": "react-q-63",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Concurrent rendering features and rendering fibers in modern React.",
-    "snippet": "// Example related to Concurrent rendering features and rendering fibers\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Concurrent rendering features and rendering fibers. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain Server Actions validation using Zod schemas in React 19.",
+    "snippet": "// actions.js\n'use server';\nimport { z } from 'zod';\n\nconst schema = z.object({ age: z.number().min(18) });\n\nexport async function register(prevState, formData) {\n  const result = schema.safeParse({ age: Number(formData.get('age')) });\n  if (!result.success) return { errors: result.error.flatten().fieldErrors };\n  return { success: true };\n}",
+    "answer": "Since Server Actions run on the server, you can import server-side validation libraries like Zod. This validates form data formats directly inside the Action before calling database methods, returning validation issues in a simple response object."
   },
   {
     "id": "react-q-64",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Context API performance bottlenecks and mitigation in modern React.",
-    "snippet": "// Example related to Context API performance bottlenecks and mitigation\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Context API performance bottlenecks and mitigation. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain the new hook useOptimistic rollback mechanics.",
+    "snippet": "// If the async action fails (throws error),\n// useOptimistic automatically discards the optimistic value\n// and reverts the state back to the actual, original props source.",
+    "answer": "useOptimistic is linked to the lifecycle of the transition action. When an async update is dispatched, useOptimistic displays the temporary state immediately. If the server action completes successfully, it syncs with parent props. If it fails, React rolls back the optimistic state."
   },
   {
     "id": "react-q-65",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of HOCs vs Render Props vs Hooks comparison in modern React.",
-    "snippet": "// Example related to HOCs vs Render Props vs Hooks comparison\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes HOCs vs Render Props vs Hooks comparison. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how React 19 Compiler handles dependency arrays automatically.",
+    "snippet": "// Developer doesn't have to provide dependencies anymore!\n// React Compiler calculates closure variables automatically\n// and updates memoization values when dependencies change.",
+    "answer": "The React 19 Compiler analyzes the javascript scope to track which values are used in computations. It automatically builds dependency graphs for components, eliminating manual dependency tracking and reducing bugs from stale values."
   },
   {
     "id": "react-q-66",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of React portals and rendering external DOM paths in modern React.",
-    "snippet": "// Example related to React portals and rendering external DOM paths\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes React portals and rendering external DOM paths. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain how styles are integrated with Suspense in React 19.",
+    "snippet": "// React halts rendering component contents until the stylesheet has loaded\n<link rel=\"stylesheet\" href=\"/styles.css\" precedence=\"default\" />",
+    "answer": "When React 19 encounters a stylesheet link with a precedence prop, it instructs the browser to load it, and suspends rendering of that component's content until the stylesheet finishes loading. This eliminates flash of unstyled content (FOUC)."
   },
   {
     "id": "react-q-67",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Error boundaries limits (async/event errors) in modern React.",
-    "snippet": "// Example related to Error boundaries limits (async/event errors)\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Error boundaries limits (async/event errors). Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain hydration mismatches in script injections in React 19.",
+    "snippet": "// External extensions injecting scripts into document body\n// causes hydration warnings. React 19 includes logic\n// to ignore third-party script/style injections.",
+    "answer": "React 19's hydration engine is updated to tolerate external browser extension styles or script tags injected in client-side HTML. Instead of throwing fatal warnings or discarding trees, React ignores third-party script nodes, making SSR apps more robust."
   },
   {
     "id": "react-q-68",
     "category": "React 19 & Advanced Features",
-    "question": "Explain the concept of State updates batching in setTimeout/promises in modern React.",
-    "snippet": "// Example related to State updates batching in setTimeout/promises\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes State updates batching in setTimeout/promises. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "question": "Explain how React 19 handles loading of script tags with async/defer.",
+    "snippet": "// React automatically deduplicates identical scripts rendered inline\n<script async src=\"https://cdn.example.com/widget.js\" />",
+    "answer": "In React 19, rendering a script tag inside a component will cause React to automatically deduplicate it. React ensures the script is loaded only once on the page, regardless of how many instances of the component are rendered, and manages its script placement."
   },
   {
     "id": "react-q-69",
-    "category": "Hooks & State Management",
-    "question": "Explain the concept of Server Components vs Client Components in React 19 in modern React.",
-    "snippet": "// Example related to Server Components vs Client Components in React 19\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Server Components vs Client Components in React 19. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain preloading modules dynamically in React 19.",
+    "snippet": "import { preloadModule } from 'react-dom';\n\nfunction Dashboard() {\n  // Preload code bundle of heavy components before they are rendered\n  preloadModule('/modules/HeavyChart.js', { as: 'script' });\n}",
+    "answer": "preloadModule in React 19 allows developer-driven dynamic preloading of ES module scripts. By telling the browser to fetch and parse dependency scripts before they are required, route transitions and user clicks load much faster."
   },
   {
     "id": "react-q-70",
-    "category": "Rendering & Fiber Architecture",
-    "question": "Explain the concept of Virtual DOM reconciliation and diffing algorithms in modern React.",
-    "snippet": "// Example related to Virtual DOM reconciliation and diffing algorithms\n// Implementation detail goes here.",
-    "answer": "This topic explains how React processes Virtual DOM reconciliation and diffing algorithms. Reconciliation applies changes using Virtual DOM diffs. Context updates trigger renders down the tree unless memoized. Strict mode double renders in dev to help find side-effects."
+    "category": "React 19 & Advanced Features",
+    "question": "Explain Server Actions security against Cross-Site Request Forgery (CSRF).",
+    "snippet": "// React 19 uses cryptographic action IDs and token verification\n// to validate that incoming Server Action POST calls\n// originate from the identical client session.",
+    "answer": "To protect against CSRF attacks, React 19 Server Actions require CSRF header checks, verifying that the action token and origin header match the server's session parameters. This ensures actions can only be executed by valid user pages."
   }
 ]
