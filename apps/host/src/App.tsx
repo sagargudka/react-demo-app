@@ -3,6 +3,7 @@ import { useAppStore } from './store'
 import ErrorBoundary from './components/ErrorBoundary'
 import F2FChallenges from './components/F2FChallenges'
 import { SessionNotes } from './SessionNotes'
+import { SystemDesignGrid } from './components/SystemDesignGrid'
 import pkg from '../package.json'
 
 interface QuestionItem {
@@ -45,6 +46,7 @@ function App() {
   const [showAnswer, setShowAnswer] = useState(false)
   const [mfeSubTab, setMfeSubTab] = useState<'demo' | 'questions'>('demo')
   const [mobileDetailActive, setMobileDetailActive] = useState(false)
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -112,7 +114,8 @@ function App() {
   // Load questions based on current route path
   useEffect(() => {
     let dataUrl = ''
-    const base = import.meta.env.BASE_URL || '/'
+    const rawBase = import.meta.env.BASE_URL || '/'
+    const base = rawBase.endsWith('/') ? rawBase : rawBase + '/'
     if (currentPath === '/microfrontend' || currentPath === '/') {
       dataUrl = `${base}data/microfrontend.json`
     } else if (currentPath === '/react-learnings') {
@@ -135,7 +138,10 @@ function App() {
       setShowAnswer(false)
       setMobileDetailActive(false)
       fetch(dataUrl)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP error ${res.status} fetching ${dataUrl}`)
+          return res.json()
+        })
         .then((data) => {
           if (Array.isArray(data)) {
             setQuestions(data)
@@ -197,22 +203,78 @@ function App() {
     }
   }
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   const isMfeRoute = (currentPath === '/' || currentPath === '/microfrontend') && mfeSubTab === 'demo'
   const isQuestionRoute = currentPath === '/react-learnings' || currentPath === '/frontend-learnings' || currentPath === '/react-testing' || currentPath === '/aws' || currentPath === '/system-design' || ((currentPath === '/microfrontend' || currentPath === '/') && mfeSubTab === 'questions')
+
+  const navItems = [
+    { label: 'Microfrontend', path: '/' },
+    { label: 'React Learnings', path: '/react-learnings' },
+    { label: 'Frontend Learnings', path: '/frontend-learnings' },
+    { label: 'React Testing', path: '/react-testing' },
+    { label: 'AWS', path: '/aws' },
+    { label: 'System Design', path: '/system-design' },
+    { label: 'F2F Coding', path: '/f2f-challenges' },
+    { label: 'Session Notes', path: '/session-notes' },
+  ]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: '1200px', margin: '0 auto', padding: '20px', boxSizing: 'border-box' }}>
       
-      {/* Navigation Bar */}
-      <nav style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px', padding: '10px', background: '#333', borderRadius: '8px' }}>
-        <button onClick={() => navigateTo('/')} style={{ background: (currentPath === '/' || currentPath === '/microfrontend') ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>Microfrontend</button>
-        <button onClick={() => navigateTo('/react-learnings')} style={{ background: currentPath === '/react-learnings' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>React Learnings</button>
-        <button onClick={() => navigateTo('/frontend-learnings')} style={{ background: currentPath === '/frontend-learnings' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>Frontend Learnings</button>
-        <button onClick={() => navigateTo('/react-testing')} style={{ background: currentPath === '/react-testing' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>React Testing</button>
-        <button onClick={() => navigateTo('/aws')} style={{ background: currentPath === '/aws' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>AWS</button>
-        <button onClick={() => navigateTo('/system-design')} style={{ background: currentPath === '/system-design' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>System Design</button>
-        <button onClick={() => navigateTo('/f2f-challenges')} style={{ background: currentPath === '/f2f-challenges' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>F2F Coding</button>
-        <button onClick={() => navigateTo('/session-notes')} style={{ background: currentPath === '/session-notes' ? '#aa3bff' : 'transparent', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px 16px', borderRadius: '4px' }}>Session Notes</button>
+      {/* Navigation Bar: Desktop Flex, Mobile Hamburger */}
+      <nav style={{ marginBottom: '20px', background: '#1c1b22', borderRadius: '8px', padding: '10px 16px', border: '1px solid #2e2c35', position: 'relative' }}>
+        
+        {/* Mobile Header Bar with Absolute Top Right Hamburger Button */}
+        <div className="show-only-on-mobile" style={{ display: 'flex', alignItems: 'center', minHeight: '36px' }}>
+          <span style={{ fontWeight: 'bold', color: '#aa3bff', fontSize: '1.1rem' }}>Interview Prep</span>
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ 
+              position: 'absolute', 
+              top: '10px', 
+              right: '16px', 
+              background: '#aa3bff', 
+              border: 'none', 
+              color: '#fff', 
+              fontSize: '1.2rem', 
+              padding: '6px 14px', 
+              borderRadius: '6px', 
+              cursor: 'pointer',
+              zIndex: 100
+            }}
+          >
+            {mobileMenuOpen ? '✕' : '☰'}
+          </button>
+        </div>
+
+        {/* Desktop Nav Links / Mobile Dropdown Menu */}
+        <div 
+          className={mobileMenuOpen ? '' : 'hide-on-mobile'}
+          style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginTop: mobileMenuOpen ? '12px' : '0' }}
+        >
+          {navItems.map((item) => (
+            <button 
+              key={item.path}
+              onClick={() => {
+                navigateTo(item.path)
+                setMobileMenuOpen(false)
+              }} 
+              style={{ 
+                background: (currentPath === item.path || (item.path === '/' && currentPath === '/microfrontend')) ? '#aa3bff' : 'transparent', 
+                border: 'none', 
+                color: '#fff', 
+                cursor: 'pointer', 
+                padding: '8px 16px', 
+                borderRadius: '4px',
+                width: mobileMenuOpen ? '100%' : 'auto',
+                textAlign: 'center'
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* Subtabs for Microfrontend Route */}
@@ -333,23 +395,58 @@ function App() {
             <SessionNotes />
           )}
 
+          {/* System Design Dedicated Cards & Modal Layout */}
+          {currentPath === '/system-design' && (
+            <SystemDesignGrid questions={questions} />
+          )}
+
           {/* Interactive Question Database Router */}
-          {isQuestionRoute && (
+          {isQuestionRoute && currentPath !== '/system-design' && (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <h2 style={{ textAlign: 'center', color: '#aa3bff', marginBottom: '20px' }}>
-                {currentPath === '/system-design' ? 'System Design (HLD & LLD)' : currentPath === '/aws' ? 'AWS & Cloud Infrastructure' : currentPath === '/react-testing' ? 'React Testing' : currentPath === '/microfrontend' ? 'Micro-Frontend' : currentPath === '/react-learnings' ? 'React' : 'Frontend'} Interview Prep ({questions.length} Questions)
+                {currentPath === '/aws' ? 'AWS & Cloud Infrastructure' : currentPath === '/react-testing' ? 'React Testing' : currentPath === '/microfrontend' ? 'Micro-Frontend' : currentPath === '/react-learnings' ? 'React' : 'Frontend'} Interview Prep ({questions.length} Questions)
               </h2>
 
-              {/* Filters & Search */}
-              <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search questions..."
-                  style={{ padding: '8px 12px', width: '300px', borderRadius: '6px', border: '1px solid #444', background: '#1f1f1f', color: '#fff' }}
-                />
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {/* Filters & Search Bar with Side-by-Side ⚙️ Filter Icon Button */}
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flex: '1', minWidth: '280px' }}>
+                    <input 
+                      type="text" 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search questions..."
+                      style={{ padding: '10px 14px', flex: '1', borderRadius: '6px', border: '1px solid #444', background: '#1f1f1f', color: '#fff', fontSize: '0.95rem', boxSizing: 'border-box' }}
+                    />
+                    
+                    {/* Filter Icon Button Beside Search Input */}
+                    <button
+                      onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+                      title="Toggle Category Filters"
+                      style={{
+                        background: mobileFilterOpen ? '#aa3bff' : '#222',
+                        border: '1px solid #aa3bff',
+                        color: '#fff',
+                        padding: '10px 14px',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.1rem'
+                      }}
+                    >
+                      ⚙️
+                    </button>
+                  </div>
+                </div>
+
+                {/* Category Pills (Visible on Desktop, Collapsible on Mobile via ⚙️ Icon) */}
+                <div 
+                  className={mobileFilterOpen ? '' : 'hide-on-mobile'}
+                  style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}
+                >
                   {categories.map((cat) => (
                     <button 
                       key={cat}
@@ -435,45 +532,50 @@ function App() {
                   </button>
                   
                   {currentQuestion ? (
-                    <div style={{ flexGrow: 1, overflowY: 'auto', marginBottom: '20px' }}>
-                      <span style={{ fontSize: '0.85rem', background: '#251a3a', color: '#c084fc', padding: '4px 10px', borderRadius: '12px', fontWeight: 'bold' }}>
-                        {currentQuestion.category}
-                      </span>
-                      <h2 style={{ color: '#fff', marginTop: '15px', marginBottom: '20px', lineHeight: '1.4' }}>
-                        {currentQuestion.question}
-                      </h2>
-                      
-                      <div style={{ minHeight: '120px', marginBottom: '20px' }}>
-                        {showAnswer ? (
-                          <div>
-                            <h4 style={{ color: '#42b983', margin: '0 0 10px 0' }}>Answer:</h4>
-                            <p style={{ lineHeight: '1.6', color: '#e0e0e0', whiteSpace: 'pre-line' }}>{currentQuestion.answer}</p>
-                            
-                            {currentQuestion.snippet && (
-                              <pre style={{ background: '#0e0d12', padding: '15px', borderRadius: '6px', overflowX: 'auto', border: '1px solid #2e2c35', marginTop: '15px' }}>
-                                <code style={{ fontFamily: 'monospace', color: '#42b983', fontSize: '0.9rem' }}>{currentQuestion.snippet}</code>
-                              </pre>
-                            )}
-                          </div>
-                        ) : (
-                          <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', background: '#131217', borderRadius: '8px', border: '1px dashed #444', minHeight: '150px' }}>
-                            <button 
-                              onClick={() => setShowAnswer(true)}
-                              style={{
-                                padding: '10px 20px',
-                                background: '#aa3bff',
-                                border: 'none',
-                                color: '#fff',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontWeight: 'bold',
-                                fontSize: '1rem'
-                              }}
-                            >
-                              Show Answer
-                            </button>
-                          </div>
-                        )}
+                    <div style={{ flexGrow: 1, overflowY: 'auto', marginBottom: '20px', textAlign: 'left' }}>
+                      <div>
+                        <span style={{ fontSize: '0.85rem', background: '#251a3a', color: '#c084fc', padding: '4px 10px', borderRadius: '12px', fontWeight: 'bold' }}>
+                          {currentQuestion.category}
+                        </span>
+                        <h2 style={{ color: '#fff', marginTop: '15px', marginBottom: '20px', lineHeight: '1.4', textAlign: 'left' }}>
+                          {currentQuestion.question}
+                        </h2>
+                        
+                        <div style={{ minHeight: '120px', marginBottom: '20px', textAlign: 'left' }}>
+                          {showAnswer ? (
+                            <div>
+                              {currentQuestion.snippet && (
+                                <div style={{ marginBottom: '20px' }}>
+                                  <h4 style={{ color: '#c084fc', margin: '0 0 10px 0' }}>Snippet / Code:</h4>
+                                  <pre style={{ background: '#0e0d12', padding: '15px', borderRadius: '6px', overflowX: 'auto', border: '1px solid #2e2c35' }}>
+                                    <code style={{ fontFamily: 'monospace', color: '#38bdf8', fontSize: '0.85rem', lineHeight: '1.4' }}>{currentQuestion.snippet}</code>
+                                  </pre>
+                                </div>
+                              )}
+
+                              <h4 style={{ color: '#42b983', margin: '0 0 10px 0' }}>Answer:</h4>
+                              <p style={{ lineHeight: '1.6', color: '#e0e0e0', whiteSpace: 'pre-line', textAlign: 'left' }}>{currentQuestion.answer}</p>
+                            </div>
+                          ) : (
+                            <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', background: '#131217', borderRadius: '8px', border: '1px dashed #444', minHeight: '150px' }}>
+                              <button 
+                                onClick={() => setShowAnswer(true)}
+                                style={{
+                                  padding: '10px 20px',
+                                  background: '#aa3bff',
+                                  border: 'none',
+                                  color: '#fff',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                  fontWeight: 'bold',
+                                  fontSize: '1rem'
+                                }}
+                              >
+                                Show Answer
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ) : (

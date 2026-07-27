@@ -110,8 +110,9 @@ button:active {
 
   .responsive-split-grid > div,
   .f2f-split-grid > div {
-    max-height: 400px;
-    overflow-y: auto;
+    max-height: none !important;
+    min-height: 65vh;
+    overflow-y: visible !important;
   }
 
   /* Make sure main host wrapper is not locked to 100vh on mobile to allow natural page scrolling */
