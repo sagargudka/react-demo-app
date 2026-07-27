@@ -337,7 +337,7 @@ function App() {
           {isQuestionRoute && (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <h2 style={{ textAlign: 'center', color: '#aa3bff', marginBottom: '20px' }}>
-                {currentPath === '/microfrontend' ? 'Micro-Frontend' : currentPath === '/react-learnings' ? 'React' : 'Frontend'} Interview Prep ({questions.length} Questions)
+                {currentPath === '/system-design' ? 'System Design (HLD & LLD)' : currentPath === '/aws' ? 'AWS & Cloud Infrastructure' : currentPath === '/react-testing' ? 'React Testing' : currentPath === '/microfrontend' ? 'Micro-Frontend' : currentPath === '/react-learnings' ? 'React' : 'Frontend'} Interview Prep ({questions.length} Questions)
               </h2>
 
               {/* Filters & Search */}
